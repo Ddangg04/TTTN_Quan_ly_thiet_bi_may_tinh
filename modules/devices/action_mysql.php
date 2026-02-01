@@ -13,7 +13,7 @@ if (!defined('NV_IS_FILE_MODULES')) {
     exit('Stop!!!');
 }
 
-// SQL DROP TABLE khi gỡ cài đặt
+// SQL DROP TABLE khi gỡ cài đặt (Uninstall)
 $sql_drop_module = [];
 $sql_drop_module[] = 'DROP TABLE IF EXISTS ' . $db_config['prefix'] . '_' . $lang . '_' . $module_data . '_devices';
 $sql_drop_module[] = 'DROP TABLE IF EXISTS ' . $db_config['prefix'] . '_' . $lang . '_' . $module_data . '_device_images';
@@ -164,11 +164,11 @@ $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_"
 // Dữ liệu mẫu DEVICES
 $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_devices 
 (id, cat_id, brand_id, model_code, title, alias, quantity, price, price_old, description, bodytext, status, weight, is_featured, inhome, add_time, edit_time, userid) VALUES
-(1, 5, 1, 'G15-5520', 'Dell Gaming G15 5520 i7-12700H', 'dell-gaming-g15-5520-i7-12700h', 10, 25990000, 29990000, 'Laptop gaming Dell G15 5520 với CPU Intel Core i7-12700H, RAM 16GB, RTX 3060 6GB', '<p>Dell Gaming G15 5520 là laptop gaming hiệu năng cao với cấu hình mạnh mẽ...</p>', 1, 1, 1, 1, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1),
-(2, 5, 3, 'ROG-STRIX-G15', 'Asus ROG Strix G15 AMD Ryzen 9', 'asus-rog-strix-g15-amd-ryzen-9', 5, 32990000, 35990000, 'Laptop gaming Asus ROG Strix G15 với AMD Ryzen 9, RTX 3070', '<p>Asus ROG Strix G15 là dòng laptop gaming cao cấp...</p>', 1, 2, 1, 1, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1),
-(3, 6, 2, 'PAVILION-15', 'HP Pavilion 15 i5-1235U', 'hp-pavilion-15-i5-1235u', 15, 15990000, 17990000, 'Laptop văn phòng HP Pavilion 15 i5-1235U, RAM 8GB', '<p>HP Pavilion 15 phù hợp cho công việc văn phòng...</p>', 1, 3, 0, 1, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1),
-(4, 8, 8, 'FURY-DDR4-16GB', 'Kingston Fury DDR4 16GB 3200MHz', 'kingston-fury-ddr4-16gb-3200mhz', 50, 1490000, 0, 'RAM Kingston Fury DDR4 16GB 3200MHz', '<p>Kingston Fury DDR4 16GB là RAM hiệu năng cao...</p>', 1, 4, 0, 0, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1),
-(5, 9, 8, 'NV2-1TB', 'Kingston NV2 SSD 1TB PCIe Gen 4', 'kingston-nv2-ssd-1tb-pcie-gen-4', 30, 1890000, 0, 'SSD NVMe Kingston NV2 1TB PCIe Gen 4', '<p>Kingston NV2 SSD 1TB với chuẩn PCIe Gen 4...</p>', 1, 5, 0, 0, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1)";
+(1, 5, 1, 'G15-5520', 'Dell Gaming G15 5520 i7-12700H', 'dell-gaming-g15-5520-i7-12700h', 10, 25990000, 29990000, 'Laptop gaming Dell G15 5520 với CPU Intel Core i7-12700H, RAM 16GB, RTX 3060 6GB', '<p>Dell Gaming G15 5520 là laptop gaming hiệu năng cao với cấu hình mạnh mẽ, thiết kế gaming chuyên nghiệp.</p><h3>Thông số kỹ thuật:</h3><ul><li>CPU: Intel Core i7-12700H</li><li>RAM: 16GB DDR5</li><li>VGA: RTX 3060 6GB</li><li>Màn hình: 15.6 inch Full HD 120Hz</li><li>Ổ cứng: 512GB SSD NVMe</li></ul>', 1, 1, 1, 1, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1),
+(2, 5, 3, 'ROG-STRIX-G15', 'Asus ROG Strix G15 AMD Ryzen 9', 'asus-rog-strix-g15-amd-ryzen-9', 5, 32990000, 35990000, 'Laptop gaming Asus ROG Strix G15 với AMD Ryzen 9, RTX 3070', '<p>Asus ROG Strix G15 là dòng laptop gaming cao cấp với hiệu năng vượt trội.</p><h3>Thông số kỹ thuật:</h3><ul><li>CPU: AMD Ryzen 9 5900HX</li><li>RAM: 16GB DDR4</li><li>VGA: RTX 3070 8GB</li><li>Màn hình: 15.6 inch QHD 165Hz</li><li>Ổ cứng: 1TB SSD NVMe</li></ul>', 1, 2, 1, 1, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1),
+(3, 6, 2, 'PAVILION-15', 'HP Pavilion 15 i5-1235U', 'hp-pavilion-15-i5-1235u', 15, 15990000, 17990000, 'Laptop văn phòng HP Pavilion 15 i5-1235U, RAM 8GB', '<p>HP Pavilion 15 phù hợp cho công việc văn phòng, học tập với thiết kế nhỏ gọn, pin tốt.</p><h3>Thông số kỹ thuật:</h3><ul><li>CPU: Intel Core i5-1235U</li><li>RAM: 8GB DDR4</li><li>VGA: Intel Iris Xe</li><li>Màn hình: 15.6 inch Full HD</li><li>Ổ cứng: 512GB SSD</li></ul>', 1, 3, 0, 1, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1),
+(4, 8, 8, 'FURY-DDR4-16GB', 'Kingston Fury DDR4 16GB 3200MHz', 'kingston-fury-ddr4-16gb-3200mhz', 50, 1490000, 0, 'RAM Kingston Fury DDR4 16GB 3200MHz', '<p>Kingston Fury DDR4 16GB là RAM hiệu năng cao, ổn định cho gaming và làm việc.</p><h3>Thông số:</h3><ul><li>Dung lượng: 16GB (1x16GB)</li><li>Tốc độ: 3200MHz</li><li>CAS Latency: CL16</li><li>Điện áp: 1.35V</li></ul>', 1, 4, 0, 0, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1),
+(5, 9, 8, 'NV2-1TB', 'Kingston NV2 SSD 1TB PCIe Gen 4', 'kingston-nv2-ssd-1tb-pcie-gen-4', 30, 1890000, 0, 'SSD NVMe Kingston NV2 1TB PCIe Gen 4', '<p>Kingston NV2 SSD 1TB với chuẩn PCIe Gen 4 tốc độ đọc ghi cực nhanh.</p><h3>Thông số:</h3><ul><li>Dung lượng: 1TB</li><li>Chuẩn: M.2 2280 NVMe PCIe Gen 4</li><li>Tốc độ đọc: 3500 MB/s</li><li>Tốc độ ghi: 2100 MB/s</li></ul>', 1, 5, 0, 0, " . NV_CURRENTTIME . ", " . NV_CURRENTTIME . ", 1)";
 
 // Dữ liệu mẫu DEVICE_IMAGES
 $sql_create_module[] = "INSERT INTO " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_device_images 

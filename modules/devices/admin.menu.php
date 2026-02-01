@@ -3,21 +3,15 @@
 /**
  * NukeViet Content Management System
  * @version 5.x
- * @author VINADES.,JSC <contact@vinades.vn>
- * @copyright (C) 2009-2025 VINADES.,JSC. All rights reserved
- * @license GNU/GPL version 2 or any later version
- * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
 if (!defined('NV_ADMIN')) {
     exit('Stop!!!');
 }
 
-$submenu['department'] = $nv_Lang->getModule('departments');
-if (defined('NV_IS_SPADMIN')) {
-    $submenu['supporter'] = $nv_Lang->getModule('supporter');
-}
-$submenu['send'] = $nv_Lang->getModule('compose_mail');
-if (defined('NV_IS_SPADMIN')) {
-    $submenu['config'] = $nv_Lang->getModule('config');
-}
+// Menu admin của module
+$submenu['main'] = $nv_Lang->getModule('dashboard');
+$submenu['categories'] = $nv_Lang->getModule('categories_manager');
+$submenu['brands'] = $nv_Lang->getModule('brands_manager');
+$submenu['devices'] = $nv_Lang->getModule('devices_manager');
+$submenu['config'] = $nv_Lang->getGlobal('mod_config');
