@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2026-02-01 07:07:13
+/* Smarty version 5.4.3, created on 2026-02-01 20:45:50
   from 'file:vmodule.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_697e993142fbd8_04424074',
+  'unifunc' => 'content_697f590edff4f8_78670400',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_697e993142fbd8_04424074 (\Smarty\Template $_smarty_tpl) {
+function content_697f590edff4f8_78670400 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\admin_future\\modules\\modules';
 ?><div class="card border-primary border-3 border-bottom-0 border-start-0 border-end-0">
     <div class="card-body pt-4">

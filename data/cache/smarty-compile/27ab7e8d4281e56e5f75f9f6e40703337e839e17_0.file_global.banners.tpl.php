@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2026-02-01 07:33:13
+/* Smarty version 5.4.3, created on 2026-02-01 20:29:12
   from 'file:global.banners.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_697e9f496f5817_40599939',
+  'unifunc' => 'content_697f5528a8f924_68620152',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_697e9f496f5817_40599939 (\Smarty\Template $_smarty_tpl) {
+function content_697f5528a8f924_68620152 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\default\\modules\\banners\\smarty';
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('BANNERS'), 'data');
 $foreach17DoElse = true;

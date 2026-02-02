@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2026-02-01 07:04:53
+/* Smarty version 5.4.3, created on 2026-02-01 20:16:30
   from 'file:main.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_697e98a57f1a60_79377171',
+  'unifunc' => 'content_697f522e83b7c4_96950315',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_697e98a57f1a60_79377171 (\Smarty\Template $_smarty_tpl) {
+function content_697f522e83b7c4_96950315 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\admin_future\\modules\\modules';
 $_smarty_tpl->assign('tblNames', array('act'=>((string)$_smarty_tpl->getValue('LANG')->getModule('caption_actmod')),'deact'=>((string)$_smarty_tpl->getValue('LANG')->getModule('caption_deactmod')),'bad'=>((string)$_smarty_tpl->getValue('LANG')->getModule('caption_badmod'))), false, NULL);?>
 <div class="vstack gap-4">

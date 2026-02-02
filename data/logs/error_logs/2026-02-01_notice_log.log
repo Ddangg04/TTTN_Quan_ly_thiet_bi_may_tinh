@@ -1,155 +1,38 @@
 {
-    "time": "Sun, 01 Feb 2026 01:04:45 +0100",
+    "time": "Sun, 01 Feb 2026 14:39:52 +0100",
     "server": "localhost",
     "ip": "::1",
-    "errno": "1024 (User Notice)",
-    "errstr": "SQLSTATE&lbrack;23000&rbrack;: Integrity constraint violation: 1062 Duplicate entry 'devices' for key 'PRIMARY'",
-    "file": "/admin/modules/setup.php",
-    "line": 116,
-    "request": "/nukeviet/admin/vi/modules/setup/?setmodule=devices&checkss=e7a6abb60b83ea5be7a22642ce8ec2e6&sample=0",
+    "errno": "2 (Warning)",
+    "errstr": "Undefined variable $lang_module",
+    "file": "/modules/devices/admin.menu.php",
+    "line": 17,
+    "request": "/nukeviet/admin/vi/modules/edit/?mod=devices",
     "method": "GET",
     "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
 }
 -------------------
 {
-    "time": "Sun, 01 Feb 2026 01:04:45 +0100",
+    "time": "Sun, 01 Feb 2026 14:39:52 +0100",
     "server": "localhost",
     "ip": "::1",
-    "errno": "1024 (User Notice)",
-    "errstr": "PDOException Object\n(\n    &lbrack;message:protected&rbrack; => SQLSTATE&lbrack;23000&rbrack;: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails\n    &lbrack;string:Exception:private&rbrack; => \n    &lbrack;code:protected&rbrack; => 23000\n    &lbrack;file:protected&rbrack; => /includes/vendor/vinades/nukeviet/Core/Database.php\n    &lbrack;line:protected&rbrack; => 544\n    &lbrack;trace:Exception:private&rbrack; => Array\n        (\n            &lbrack;0&rbrack; => Array\n                (\n                    &lbrack;file&rbrack; => /includes/vendor/vinades/nukeviet/Core/Database.php\n                    &lbrack;line&rbrack; => 544\n                    &lbrack;function&rbrack; => query\n                    &lbrack;class&rbrack; => PDO\n                    &lbrack;type&rbrack; => ->\n                    &lbrack;args&rbrack; => Array\n                        (\n                            &lbrack;0&rbrack; => DROP TABLE IF EXISTS nv5_vi_devices_devices\n                            &lbrack;1&rbrack; => \n                        )\n\n                )\n\n            &lbrack;1&rbrack; => Array\n                (\n                    &lbrack;file&rbrack; => /admin/modules/functions.php\n                    &lbrack;line&rbrack; => 196\n                    &lbrack;function&rbrack; => query\n                    &lbrack;class&rbrack; => NukeViet/Core/Database\n                    &lbrack;type&rbrack; => ->\n                    &lbrack;args&rbrack; => Array\n                        (\n                            &lbrack;0&rbrack; => DROP TABLE IF EXISTS nv5_vi_devices_devices\n                        )\n\n                )\n\n            &lbrack;2&rbrack; => Array\n                (\n                    &lbrack;file&rbrack; => /admin/modules/setup.php\n                    &lbrack;line&rbrack; => 123\n                    &lbrack;function&rbrack; => nv_setup_data_module\n                    &lbrack;args&rbrack; => Array\n                        (\n                            &lbrack;0&rbrack; => vi\n                            &lbrack;1&rbrack; => devices\n                            &lbrack;2&rbrack; => 0\n                        )\n\n                )\n\n            &lbrack;3&rbrack; => Array\n                (\n                    &lbrack;file&rbrack; => /admin/index.php\n                    &lbrack;line&rbrack; => 170\n                    &lbrack;args&rbrack; => Array\n                        (\n                            &lbrack;0&rbrack; => /admin/modules/setup.php\n                        )\n\n                    &lbrack;function&rbrack; => require\n                )\n\n        )\n\n    &lbrack;previous:Exception:private&rbrack; => \n    &lbrack;errorInfo&rbrack; => Array\n        (\n            &lbrack;0&rbrack; => 23000\n            &lbrack;1&rbrack; => 1451\n            &lbrack;2&rbrack; => Cannot delete or update a parent row: a foreign key constraint fails\n        )\n\n)\n",
-    "file": "/admin/modules/functions.php",
-    "line": 198,
-    "request": "/nukeviet/admin/vi/modules/setup/?setmodule=devices&checkss=e7a6abb60b83ea5be7a22642ce8ec2e6&sample=0",
+    "errno": "2 (Warning)",
+    "errstr": "Undefined variable $lang_module",
+    "file": "/modules/devices/admin.menu.php",
+    "line": 18,
+    "request": "/nukeviet/admin/vi/modules/edit/?mod=devices",
     "method": "GET",
     "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
 }
 -------------------
 {
-    "time": "Sun, 01 Feb 2026 01:08:23 +0100",
+    "time": "Sun, 01 Feb 2026 14:39:52 +0100",
     "server": "localhost",
     "ip": "::1",
     "errno": "2 (Warning)",
-    "errstr": "Undefined array key \"dashboard\"",
-    "file": "/modules/devices/menu.php",
-    "line": 12,
-    "request": "/nukeviet/admin/index.php?language=vi&nv=menu&nocache=1769904503746",
-    "method": "POST",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 01:08:23 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "2 (Warning)",
-    "errstr": "Undefined array key \"categories\"",
-    "file": "/modules/devices/menu.php",
-    "line": 13,
-    "request": "/nukeviet/admin/index.php?language=vi&nv=menu&nocache=1769904503746",
-    "method": "POST",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 01:08:23 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "2 (Warning)",
-    "errstr": "Undefined array key \"brands\"",
-    "file": "/modules/devices/menu.php",
-    "line": 14,
-    "request": "/nukeviet/admin/index.php?language=vi&nv=menu&nocache=1769904503746",
-    "method": "POST",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 01:08:23 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "2 (Warning)",
-    "errstr": "Undefined array key \"devices\"",
-    "file": "/modules/devices/menu.php",
-    "line": 15,
-    "request": "/nukeviet/admin/index.php?language=vi&nv=menu&nocache=1769904503746",
-    "method": "POST",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 01:08:23 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "2 (Warning)",
-    "errstr": "Undefined array key \"config\"",
-    "file": "/modules/devices/menu.php",
-    "line": 16,
-    "request": "/nukeviet/admin/index.php?language=vi&nv=menu&nocache=1769904503746",
-    "method": "POST",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 01:46:09 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "1024 (User Notice)",
-    "errstr": "SQLSTATE&lbrack;HY000&rbrack; &lbrack;2002&rbrack; No connection could be made because the target machine actively refused it",
-    "file": "/includes/vendor/vinades/nukeviet/Core/Database.php",
-    "line": 95,
-    "request": "/nukeviet/sload.php?nocache=1769906769069",
-    "method": "POST",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 11:04:52 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "1024 (User Notice)",
-    "errstr": "SQLSTATE&lbrack;23000&rbrack;: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails",
-    "file": "/admin/modules/del.php",
-    "line": 59,
-    "request": "/nukeviet/admin/index.php?language=vi&nv=modules&op=del&nocache=1769940292006",
-    "method": "POST",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 11:31:36 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "2 (Warning)",
-    "errstr": "Undefined array key 24",
-    "file": "/modules/menu/admin/main.php",
-    "line": 696,
-    "request": "/nukeviet/admin/vi/menu/?mid=1&parentid=24",
-    "method": "GET",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 11:31:36 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "2 (Warning)",
-    "errstr": "Trying to access array offset on value of type null",
-    "file": "/modules/menu/admin/main.php",
-    "line": 698,
-    "request": "/nukeviet/admin/vi/menu/?mid=1&parentid=24",
-    "method": "GET",
-    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-}
--------------------
-{
-    "time": "Sun, 01 Feb 2026 11:31:36 +0100",
-    "server": "localhost",
-    "ip": "::1",
-    "errno": "2 (Warning)",
-    "errstr": "Trying to access array offset on value of type null",
-    "file": "/modules/menu/admin/main.php",
-    "line": 701,
-    "request": "/nukeviet/admin/vi/menu/?mid=1&parentid=24",
+    "errstr": "Undefined variable $lang_module",
+    "file": "/modules/devices/admin.menu.php",
+    "line": 19,
+    "request": "/nukeviet/admin/vi/modules/edit/?mod=devices",
     "method": "GET",
     "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
 }

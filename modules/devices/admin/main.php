@@ -3,80 +3,62 @@
 /**
  * NukeViet Content Management System
  * @version 5.x
+ * @author VINADES.,JSC <contact@vinades.vn>
+ * @copyright (C) 2009-2025 VINADES.,JSC. All rights reserved
+ * @license GNU/GPL version 2 or any later version
+ * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
 if (!defined('NV_IS_FILE_ADMIN')) {
     exit('Stop!!!');
 }
 
-$page_title = 'Dashboard';
+$page_title = $nv_Lang->getModule('list');
 
-// Thống kê
-$sql = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_devices';
-$total_devices = $db->query($sql)->fetchColumn();
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . ' ORDER BY weight ASC';
+$_rows = $db->query($sql)->fetchAll();
+$num = count($_rows);
 
-$sql = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_device_categories';
-$total_categories = $db->query($sql)->fetchColumn();
-
-$sql = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_brands';
-$total_brands = $db->query($sql)->fetchColumn();
-
-// Sản phẩm mới nhất
-$sql = 'SELECT id, title, add_time, price FROM ' . NV_PREFIXLANG . '_' . $module_data . '_devices 
-        ORDER BY add_time DESC LIMIT 10';
-$result = $db->query($sql);
-$latest_devices = [];
-while ($row = $result->fetch()) {
-    $latest_devices[] = $row;
+if ($num < 1) {
+    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=content');
 }
 
-$contents = '<div class="panel panel-primary">
-    <div class="panel-heading">Thống kê</div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="alert alert-info">
-                    <strong>' . $total_devices . '</strong> Sản phẩm
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="alert alert-success">
-                    <strong>' . $total_categories . '</strong> Danh mục
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="alert alert-warning">
-                    <strong>' . $total_brands . '</strong> Thương hiệu
-                </div>
-            </div>
-        </div>
-    </div>
-</div>';
+$tpl = new \NukeViet\Template\NVSmarty();
+$tpl->registerPlugin('modifier', 'dnumber', 'nv_number_format');
+$tpl->registerPlugin('modifier', 'ddatetime', 'nv_datetime_format');
+$tpl->setTemplateDir(get_module_tpl_dir('main.tpl'));
+$tpl->assign('LANG', $nv_Lang);
+$tpl->assign('MODULE_NAME', $module_name);
+$tpl->assign('PCONFIG', $page_config);
 
-$contents .= '<div class="panel panel-default">
-    <div class="panel-heading">Sản phẩm mới nhất</div>
-    <div class="panel-body">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Giá</th>
-                    <th>Thời gian</th>
-                </tr>
-            </thead>
-            <tbody>';
+$array_row = [];
+$iw = 0;
+$is_delCache = false;
 
-foreach ($latest_devices as $device) {
-    $contents .= '<tr>
-        <td>' . $device['id'] . '</td>
-        <td>' . $device['title'] . '</td>
-        <td>' . number_format($device['price']) . ' đ</td>
-        <td>' . date('d/m/Y H:i', $device['add_time']) . '</td>
-    </tr>';
+foreach ($_rows as $row) {
+    ++$iw;
+
+    if ($iw != $row['weight']) {
+        $row['weight'] = $iw;
+        $sth = $db->prepare('UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET weight=' . $row['weight'] . ' WHERE id= :id');
+        $sth->bindParam(':id', $row['id'], PDO::PARAM_STR);
+        $sth->execute();
+        $is_delCache = true;
+    }
+
+    $row['checkss'] = md5($row['id'] . NV_CHECK_SESSION);
+    $row['url_view'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $row['alias'] . $global_config['rewrite_exturl'];
+    $row['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=content&amp;id=' . $row['id'];
+    $array_row[] = $row;
 }
 
-$contents .= '</tbody></table></div></div>';
+if ($is_delCache) {
+    $nv_Cache->delMod($module_name);
+}
+
+$tpl->assign('DATA', $array_row);
+
+$contents = $tpl->fetch('main.tpl');
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_admin_theme($contents);

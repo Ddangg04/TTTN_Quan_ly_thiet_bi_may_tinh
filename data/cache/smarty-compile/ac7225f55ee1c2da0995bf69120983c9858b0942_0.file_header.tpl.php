@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2026-02-01 06:58:57
+/* Smarty version 5.4.3, created on 2026-02-01 20:16:17
   from 'file:header.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_697e974126d137_53597464',
+  'unifunc' => 'content_697f52211251a7_10264711',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_697e974126d137_53597464 (\Smarty\Template $_smarty_tpl) {
+function content_697f52211251a7_10264711 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\admin_future\\system';
 ?><!DOCTYPE html>
 <html lang="<?php echo (defined('NV_LANG_INTERFACE') ? constant('NV_LANG_INTERFACE') : null);?>
@@ -38,8 +38,8 @@ echo $_smarty_tpl->getValue('MODULE_INFO')['custom_title'];
 }?></title>
     <meta name="description" content="<?php ob_start();
 echo $_smarty_tpl->getValue('PAGE_TITLE');
-$_prefixVariable2 = ob_get_clean();
-echo $_smarty_tpl->getValue('GCONFIG')['site_description'] ?: $_prefixVariable2;?>
+$_prefixVariable1 = ob_get_clean();
+echo $_smarty_tpl->getValue('GCONFIG')['site_description'] ?: $_prefixVariable1;?>
 ">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <meta name="author" content="<?php echo $_smarty_tpl->getValue('GCONFIG')['site_name'];?>

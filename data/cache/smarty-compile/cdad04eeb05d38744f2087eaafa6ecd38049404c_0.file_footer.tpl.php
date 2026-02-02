@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2026-02-01 06:58:57
+/* Smarty version 5.4.3, created on 2026-02-01 20:16:17
   from 'file:footer.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_697e9741b57830_86982630',
+  'unifunc' => 'content_697f52219413c7_97013535',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,7 +20,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_697e9741b57830_86982630 (\Smarty\Template $_smarty_tpl) {
+function content_697f52219413c7_97013535 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\admin_future\\system';
 ?>        [THEME_ERROR_INFO]
     <?php if ($_smarty_tpl->getValue('IS_IE')) {?>

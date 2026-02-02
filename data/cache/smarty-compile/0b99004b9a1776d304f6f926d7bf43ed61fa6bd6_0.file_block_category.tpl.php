@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2026-02-01 07:33:10
+/* Smarty version 5.4.3, created on 2026-02-01 20:29:08
   from 'file:block_category.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_697e9f46d58866_89407349',
+  'unifunc' => 'content_697f5524104a77_50687155',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,14 +20,14 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_697e9f46d58866_89407349 (\Smarty\Template $_smarty_tpl) {
+function content_697f5524104a77_50687155 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\default\\modules\\news\\smarty';
 $_smarty_tpl->getSmarty()->getRuntime('TplFunction')->registerTplFunctions($_smarty_tpl, array (
   'menu' => 
   array (
     'compiled_filepath' => 'C:\\xampp\\htdocs\\nukeviet\\data\\cache\\smarty-compile\\0b99004b9a1776d304f6f926d7bf43ed61fa6bd6_0.file_block_category.tpl.php',
     'uid' => '0b99004b9a1776d304f6f926d7bf43ed61fa6bd6',
-    'call_name' => 'smarty_template_function_menu_199417243697e9f46cd4de3_98185403',
+    'call_name' => 'smarty_template_function_menu_1123577745697f5523ebe020_44485868',
   ),
 ));
 if (( !true || empty($_smarty_tpl->getValue('CONFIGS')['title_length'])) || $_smarty_tpl->getValue('CONFIGS')['title_length'] < 50) {
@@ -69,9 +69,9 @@ $(function() {
 <?php echo '</script'; ?>
 >
 <?php }
-/* smarty_template_function_menu_199417243697e9f46cd4de3_98185403 */
-if (!function_exists('smarty_template_function_menu_199417243697e9f46cd4de3_98185403')) {
-function smarty_template_function_menu_199417243697e9f46cd4de3_98185403(\Smarty\Template $_smarty_tpl,$params) {
+/* smarty_template_function_menu_1123577745697f5523ebe020_44485868 */
+if (!function_exists('smarty_template_function_menu_1123577745697f5523ebe020_44485868')) {
+function smarty_template_function_menu_1123577745697f5523ebe020_44485868(\Smarty\Template $_smarty_tpl,$params) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\default\\modules\\news\\smarty';
 $params = array_merge(array('name'=>'menu','data'=>array()), $params);
 foreach ($params as $key => $value) {
@@ -104,5 +104,5 @@ if ($_smarty_tpl->getValue('i') > 0) {?>
 <?php }
 }
 }}
-/*/ smarty_template_function_menu_199417243697e9f46cd4de3_98185403 */
+/*/ smarty_template_function_menu_1123577745697f5523ebe020_44485868 */
 }

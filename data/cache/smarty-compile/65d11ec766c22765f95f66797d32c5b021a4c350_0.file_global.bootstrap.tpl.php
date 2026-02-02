@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2026-02-01 07:33:11
+/* Smarty version 5.4.3, created on 2026-02-01 20:29:09
   from 'file:global.bootstrap.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_697e9f47b68313_62253723',
+  'unifunc' => 'content_697f5525767f93_50837499',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -20,14 +20,14 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   array (
   ),
 ))) {
-function content_697e9f47b68313_62253723 (\Smarty\Template $_smarty_tpl) {
+function content_697f5525767f93_50837499 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\default\\modules\\menu\\smarty';
 $_smarty_tpl->getSmarty()->getRuntime('TplFunction')->registerTplFunctions($_smarty_tpl, array (
   'menu' => 
   array (
     'compiled_filepath' => 'C:\\xampp\\htdocs\\nukeviet\\data\\cache\\smarty-compile\\65d11ec766c22765f95f66797d32c5b021a4c350_0.file_global.bootstrap.tpl.php',
     'uid' => '65d11ec766c22765f95f66797d32c5b021a4c350',
-    'call_name' => 'smarty_template_function_menu_1558884267697e9f47b433e2_13994099',
+    'call_name' => 'smarty_template_function_menu_843736251697f552566dbd6_97083133',
   ),
 ));
 ?>
@@ -52,9 +52,9 @@ $_smarty_tpl->getSmarty()->getRuntime('TplFunction')->registerTplFunctions($_sma
 <?php echo '</script'; ?>
 >
 <?php }
-/* smarty_template_function_menu_1558884267697e9f47b433e2_13994099 */
-if (!function_exists('smarty_template_function_menu_1558884267697e9f47b433e2_13994099')) {
-function smarty_template_function_menu_1558884267697e9f47b433e2_13994099(\Smarty\Template $_smarty_tpl,$params) {
+/* smarty_template_function_menu_843736251697f552566dbd6_97083133 */
+if (!function_exists('smarty_template_function_menu_843736251697f552566dbd6_97083133')) {
+function smarty_template_function_menu_843736251697f552566dbd6_97083133(\Smarty\Template $_smarty_tpl,$params) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\default\\modules\\menu\\smarty';
 $params = array_merge(array('name'=>'menu','data'=>array()), $params);
 foreach ($params as $key => $value) {
@@ -103,5 +103,5 @@ if ($_smarty_tpl->getValue('i') > 0) {?>
 <?php }
 }
 }}
-/*/ smarty_template_function_menu_1558884267697e9f47b433e2_13994099 */
+/*/ smarty_template_function_menu_843736251697f552566dbd6_97083133 */
 }

@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 5.4.3, created on 2026-02-01 06:59:56
+/* Smarty version 5.4.3, created on 2026-02-01 20:16:15
   from 'file:main.tpl' */
 
 /* @var \Smarty\Template $_smarty_tpl */
 if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
   'version' => '5.4.3',
-  'unifunc' => 'content_697e977c276010_61880556',
+  'unifunc' => 'content_697f521f00c9e1_43876028',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->getCompiled()->isFresh($_smarty_tpl, array (
     'file:footer.tpl' => 1,
   ),
 ))) {
-function content_697e977c276010_61880556 (\Smarty\Template $_smarty_tpl) {
+function content_697f521f00c9e1_43876028 (\Smarty\Template $_smarty_tpl) {
 $_smarty_current_dir = 'C:\\xampp\\htdocs\\nukeviet\\themes\\admin_future\\system';
 $_smarty_tpl->renderSubTemplate('file:header.tpl', $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), (int) 0, $_smarty_current_dir);
 ?>
@@ -109,9 +109,9 @@ index.php?<?php echo (defined('NV_LANG_VARIABLE') ? constant('NV_LANG_VARIABLE')
                                         <div class="row">
                                             <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('ADMIN_MODS'), 'mvalue', false, 'mname');
-$foreach11DoElse = true;
+$foreach0DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('mname')->value => $_smarty_tpl->getVariable('mvalue')->value) {
-$foreach11DoElse = false;
+$foreach0DoElse = false;
 ?>
                                             <?php if (!( !true || empty($_smarty_tpl->getValue('mvalue')['custom_title']))) {?>
                                             <?php $_smarty_tpl->assign('submenu', $_smarty_tpl->getSmarty()->getModifierCallback('submenu')($_smarty_tpl->getValue('mname')), true, NULL);?>
@@ -126,9 +126,9 @@ index.php?<?php echo (defined('NV_LANG_VARIABLE') ? constant('NV_LANG_VARIABLE')
 </a></li>
                                                     <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('submenu'), 'mopname', false, 'mop');
-$foreach12DoElse = true;
+$foreach1DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('mop')->value => $_smarty_tpl->getVariable('mopname')->value) {
-$foreach12DoElse = false;
+$foreach1DoElse = false;
 ?>
                                                     <li class="mb-1"><a href="<?php echo (defined('NV_BASE_ADMINURL') ? constant('NV_BASE_ADMINURL') : null);?>
 index.php?<?php echo (defined('NV_LANG_VARIABLE') ? constant('NV_LANG_VARIABLE') : null);?>
@@ -283,9 +283,9 @@ index.php?<?php echo (defined('NV_LANG_VARIABLE') ? constant('NV_LANG_VARIABLE')
                                             <ul>
                                                 <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('SELECT_OPTIONS'), 'selopttitle', false, 'seloptlink');
-$foreach13DoElse = true;
+$foreach2DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('seloptlink')->value => $_smarty_tpl->getVariable('selopttitle')->value) {
-$foreach13DoElse = false;
+$foreach2DoElse = false;
 ?>
                                                 <li><a href="<?php echo $_smarty_tpl->getValue('seloptlink');?>
 " title="<?php echo $_smarty_tpl->getValue('selopttitle');?>
@@ -325,9 +325,9 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 </a></li>
                                                 <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('MOD_CURRENT')['subs'], 'crrsub');
-$foreach14DoElse = true;
+$foreach3DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('crrsub')->value) {
-$foreach14DoElse = false;
+$foreach3DoElse = false;
 ?>
                                                 <?php if (!( !true || empty($_smarty_tpl->getValue('crrsub')['subs']))) {?>
                                                 <li class="parent<?php if ($_smarty_tpl->getValue('crrsub')['active']) {?> active<?php }
@@ -339,9 +339,9 @@ if ($_smarty_tpl->getValue('crrsub')['open']) {?> open<?php }?>">
                                                     <ul class="sub-menu">
                                                         <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('crrsub')['subs'], 'crrsublv2');
-$foreach15DoElse = true;
+$foreach4DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('crrsublv2')->value) {
-$foreach15DoElse = false;
+$foreach4DoElse = false;
 ?>
                                                         <li<?php if ($_smarty_tpl->getValue('crrsublv2')['active']) {?> class="active"<?php }?>><a href="<?php echo $_smarty_tpl->getValue('crrsublv2')['link'];?>
 " title="<?php echo $_smarty_tpl->getValue('crrsublv2')['title'];?>
@@ -374,9 +374,9 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 </li>
                         <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('MOD_MENU'), 'rowmenu');
-$foreach16DoElse = true;
+$foreach5DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('rowmenu')->value) {
-$foreach16DoElse = false;
+$foreach5DoElse = false;
 ?>
                         <li<?php if (!( !true || empty($_smarty_tpl->getValue('rowmenu')['subs']))) {?> class="parent"<?php }?>>
                             <a href="<?php echo $_smarty_tpl->getValue('rowmenu')['link'];?>
@@ -398,9 +398,9 @@ $foreach16DoElse = false;
 </a></li>
                                                 <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('rowmenu')['subs'], 'smenutitle', false, 'smenukey');
-$foreach17DoElse = true;
+$foreach6DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('smenukey')->value => $_smarty_tpl->getVariable('smenutitle')->value) {
-$foreach17DoElse = false;
+$foreach6DoElse = false;
 ?>
                                                 <?php if (is_array($_smarty_tpl->getValue('smenutitle'))) {?>
                                                 <li class="parent">
@@ -417,9 +417,9 @@ index.php?<?php echo $_smarty_tpl->getValue('NV_LANG_VARIABLE');?>
                                                     <ul class="sub-menu">
                                                         <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('smenutitle')['submenu'], 'sublv2', false, 'keysublv2');
-$foreach18DoElse = true;
+$foreach7DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('keysublv2')->value => $_smarty_tpl->getVariable('sublv2')->value) {
-$foreach18DoElse = false;
+$foreach7DoElse = false;
 ?>
                                                         <li><a href="<?php echo $_smarty_tpl->getValue('NV_BASE_ADMINURL');?>
 index.php?<?php echo $_smarty_tpl->getValue('NV_LANG_VARIABLE');?>
@@ -480,9 +480,9 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
                 <ol class="breadcrumb flex-nowrap mb-0">
                     <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('BREADCRUMBS'), 'brcrb');
-$foreach19DoElse = true;
+$foreach8DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('brcrb')->value) {
-$foreach19DoElse = false;
+$foreach8DoElse = false;
 ?>
                     <li class="breadcrumb-item fw-medium<?php if (!( !true || empty($_smarty_tpl->getValue('brcrb')['active']))) {?>" aria-current="page"<?php } else { ?>"<?php }?>>
                         <?php if (!( !true || empty($_smarty_tpl->getValue('brcrb')['link']))) {?>
@@ -539,9 +539,9 @@ index.php?<?php echo (defined('NV_LANG_VARIABLE') ? constant('NV_LANG_VARIABLE')
 </div>
                 <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('LANG_ADMIN'), 'langname', false, 'lang');
-$foreach20DoElse = true;
+$foreach9DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('lang')->value => $_smarty_tpl->getVariable('langname')->value) {
-$foreach20DoElse = false;
+$foreach9DoElse = false;
 ?>
                 <div class="form-check mb-1">
                     <input class="form-check-input" type="radio" id="langinterface-<?php echo $_smarty_tpl->getValue('lang');?>
@@ -560,9 +560,9 @@ $_smarty_tpl->getSmarty()->getRuntime('Foreach')->restore($_smarty_tpl, 1);?>
 </div>
                 <?php
 $_from = $_smarty_tpl->getSmarty()->getRuntime('Foreach')->init($_smarty_tpl, $_smarty_tpl->getValue('LANG_ADMIN'), 'langname', false, 'lang');
-$foreach21DoElse = true;
+$foreach10DoElse = true;
 foreach ($_from ?? [] as $_smarty_tpl->getVariable('lang')->value => $_smarty_tpl->getVariable('langname')->value) {
-$foreach21DoElse = false;
+$foreach10DoElse = false;
 ?>
                 <div class="form-check mb-1">
                     <input class="form-check-input" type="radio" id="langdata-<?php echo $_smarty_tpl->getValue('lang');?>
