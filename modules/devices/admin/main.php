@@ -12,7 +12,8 @@
 if (!defined('NV_IS_FILE_ADMIN')) {
     exit('Stop!!!');
 }
-
+$page_title = 'Quản lý thiết bị';
+$contents = 'Trang Quản lý thiết bị Máy Tính';
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_admin_theme($contents);

@@ -1,0 +1,13 @@
+{
+    "time": "Tue, 03 Feb 2026 13:39:13 +0100",
+    "server": "localhost",
+    "ip": "::1",
+    "errno": "4 (Parsing Error)",
+    "errstr": "Unclosed '{' on line 17 does not match ')'",
+    "file": "/includes/plugin/get_global_admin_theme.php",
+    "line": 50,
+    "request": "/nukeviet/admin/index.php?language=vi&nv=siteinfo&op=notification&nocache=1770122353492",
+    "method": "POST",
+    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 Edg/144.0.0.0"
+}
+-------------------
