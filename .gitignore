@@ -1,0 +1,30 @@
+# NukeViet Git Ignore
+
+# Server config files
+.htaccess
+
+# Cache directories
+data/cache/
+data/tmp/
+data/logs/
+
+# Config files (local)
+config.php
+
+# Uploaded files
+uploads/
+assets/devices/
+assets/mobile/
+assets/news/
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Checklist & Documentation (local only)
+Checklist_*.md

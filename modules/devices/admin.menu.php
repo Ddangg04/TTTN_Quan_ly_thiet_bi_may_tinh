@@ -14,9 +14,9 @@ if (!defined('NV_ADMIN'))
 // ============================================================
 // Submenu chính hiển thị trong thanh menu admin
 // ============================================================
-$submenu['main']       = $lang_module['Trang Chủ'];
-$submenu['brands']     = $lang_module['Thương Hiệu'];
-$submenu['category']   = $lang_module['Danh Mục'];
+$submenu['save_device'] = 'Thêm sản phẩm mới';
+$submenu['category'] = 'Danh mục sản phẩm';
+$submenu['brands'] = 'Thương hiệu';
 
 // ============================================================
 // Danh sách các func được phép gọi trong admin
