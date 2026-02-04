@@ -9,6 +9,6 @@
  * File: theme.php - Các hàm render giao diện frontend
  */
 
-if (!defined('NV_IS_MOD_DEVICES'))
-    die('Stop!!!');
-define('NV_IS_DEVICES', true);
+if (!defined('NV_MAINFILE')) {
+    exit('Stop!!!,theme');
+}

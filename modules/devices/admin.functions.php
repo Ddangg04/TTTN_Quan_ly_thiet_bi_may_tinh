@@ -1,11 +1,26 @@
 <?php
-if (!defined('NV_ADMIN') or !defined('NV_MAINFILE') or !defined('NV_IS_MODADMIN'))
+if (!defined('NV_ADMIN') || !defined('NV_MAINFILE') || !defined('NV_IS_MODADMIN'))
     die('Stop!!!');
-
-define('NV_IS_DEVICES_ADMIN', true);
 $allow_func=[
     'main',
     'detail',
     'search',
     'category',
+    'brand',
+    'category/content',
+    'category/add',
+    'category/edit',
+    'category/delete',
+    'brands/content',
+    'brands/add',
+    'brands/edit',
+    'brands/delete',
+    'devices/content',
+    'devices/add',
+    'devices/edit',
+    'devices/delete',
+    'images/content',
+    'images/add',
+    'images/edit',
+    'images/delete'
 ];
