@@ -14,9 +14,10 @@ if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
 }
 $module_version = [
     'name'            => 'Quản lý Thiết bị',
-    'modfuncs'        => 'main,detail,category,search',
-    'is_sysmod'       => 1,
-    'virtual'         => 1,
+    'modfuncs'        => 'main,detail,category,search,brand',
+    'submenu'         => 'main,detail,category,search,brand',
+    'is_sysmod'       => 0,
+    'virtual'         => 0,
     'version'         => '1.0.00',
     'date'            => 'Sat, 1 Feb 2026 00:00:00 GMT',
     'author'          => 'Nhóm Quản lý Thiết bị',

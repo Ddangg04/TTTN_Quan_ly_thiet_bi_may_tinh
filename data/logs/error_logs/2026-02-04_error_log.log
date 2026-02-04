@@ -1,0 +1,38 @@
+{
+    "time": "Wed, 04 Feb 2026 06:31:21 +0100",
+    "server": "localhost",
+    "ip": "::1",
+    "errno": "1 (Error)",
+    "errstr": "Uncaught PDOException: SQLSTATE&lbrack;42S02&rbrack;: Base table or view not found: 1146 Table 'nukeviet.nv5_vi_devices_categories' doesn't exist in /includes/vendor/vinades/nukeviet/Core/Database.php:544",
+    "file": "/includes/vendor/vinades/nukeviet/Core/Database.php",
+    "line": 544,
+    "request": "/nukeviet/devices/",
+    "method": "GET",
+    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+    "backtrace": [
+        "#0 /includes/vendor/vinades/nukeviet/Core/Database.php(544): PDO->query('SELECT id, titl...', NULL)",
+        "#1 /modules/devices/funcs/main.php(30): NukeViet/Core/Database->query('SELECT id, titl...')",
+        "#2 /index.php(307): require('C:/xampp/htdocs...')",
+        "#3 {main}",
+        "thrown"
+    ]
+}
+-------------------
+{
+    "time": "Wed, 04 Feb 2026 08:16:24 +0100",
+    "server": "localhost",
+    "ip": "::1",
+    "errno": "1 (Error)",
+    "errstr": "Uncaught Error: Call to a member function fetch() on null in /modules/devices/admin/category/content.php:87",
+    "file": "/modules/devices/admin/category/content.php",
+    "line": 87,
+    "request": "/nukeviet/admin/vi/devices/category/content/",
+    "method": "GET",
+    "agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
+    "backtrace": [
+        "#0 /admin/index.php(170): require()",
+        "#1 {main}",
+        "thrown"
+    ]
+}
+-------------------

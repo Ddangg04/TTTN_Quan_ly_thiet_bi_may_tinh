@@ -36,3 +36,5 @@ $global_config['extension_setup_ips'] = [];
 $global_config['core_cdn_url'] = 'https://cdn.jsdelivr.net/gh/nukeviet/nukeviet@nukeviet5.0/src/';
 $global_config['nat_ports'] = [];
 // Readmore: https://wiki.nukeviet.vn/nukeviet4:advanced_setting:file_config
+define('NV_DEBUG', true);
+define('NV_DISPLAY_ERRORS', true);
