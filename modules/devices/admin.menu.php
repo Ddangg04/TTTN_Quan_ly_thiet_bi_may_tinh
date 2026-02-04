@@ -1,9 +1,7 @@
 <?php
 
 /**
- * FILE: admin.menu.php
  * TÁC DỤNG: Định nghĩa các menu hiển thị trong admin module
- * 
  * CÁCH HOẠT ĐỘNG:
  * - Khi vào Admin -> Devices, menu bên trái sẽ hiển thị các mục này
  * - $submenu['key'] = 'Tên menu'
