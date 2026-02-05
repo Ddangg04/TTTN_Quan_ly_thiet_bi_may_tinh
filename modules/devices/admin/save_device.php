@@ -16,13 +16,10 @@ if (defined('NV_EDITOR')) {
     require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 }
 
-// Nếu được include từ add_device.php hoặc edit_device.php, chỉ hiển thị form
 if (defined('DEVICE_FORM_ONLY')) {
-    // $row, $error, $page_title đã được khởi tạo từ file gọi
     goto RENDER_FORM;
 }
 
-// Xử lý POST request (lưu dữ liệu)
 $submit = $nv_Request->get_int('submit', 'post', 0);
 if ($submit) {
     $id = $nv_Request->get_int('id', 'post', 0);
@@ -83,27 +80,22 @@ if ($submit) {
             ];
 
             if ($id > 0) {
-                // Cập nhật thiết bị
                 $result = updateDevice($id, $data);
                 $log_msg = 'Sửa thiết bị';
             } else {
-                // Thêm thiết bị mới
                 $id = createDevice($data);
                 $result = ($id > 0);
                 $log_msg = 'Thêm thiết bị mới';
             }
 
             if ($result) {
-                // Xử lý ảnh phụ thông minh: chỉ xóa/thêm khi cần thiết
                 if ($id > 0) {
-                    // Lấy danh sách ảnh cũ từ DB
                     $old_images = getDeviceImages($id);
                     $old_paths = [];
                     foreach ($old_images as $old_img) {
                         $old_paths[$old_img['url']] = $old_img['id'];
                     }
 
-                    // Lấy danh sách ảnh mới từ form
                     $new_paths = [];
                     if (!empty($row['other_images'])) {
                         foreach ($row['other_images'] as $item) {
@@ -113,14 +105,12 @@ if ($submit) {
                         }
                     }
 
-                    // Xóa những ảnh không còn trong danh sách mới
                     foreach ($old_paths as $old_path => $old_id) {
                         if (!in_array($old_path, $new_paths)) {
                             deleteDeviceImage($old_id);
                         }
                     }
 
-                    // Thêm những ảnh mới (chưa có trong DB)
                     if (!empty($row['other_images'])) {
                         foreach ($row['other_images'] as $item) {
                             if (!empty($item['path']) && !isset($old_paths[$item['path']])) {
@@ -129,7 +119,6 @@ if ($submit) {
                         }
                     }
                 } else {
-                    // Thêm mới: insert tất cả ảnh phụ
                     if (!empty($row['other_images'])) {
                         foreach ($row['other_images'] as $item) {
                             if (!empty($item['path'])) {
@@ -149,22 +138,17 @@ if ($submit) {
             $error[] = 'Lỗi: ' . $e->getMessage();
         }
     }
-    // Không redirect nếu có lỗi, hiển thị form với lỗi bên dưới
 }
 
-// Hiển thị form (GET request hoặc POST có lỗi)
 $id = $nv_Request->get_int('id', 'get', 0);
 $error = isset($error) ? $error : [];
 
-// Khởi tạo dữ liệu form
 if ($id > 0) {
-    // Sửa: Load dữ liệu từ DB
     $row = getDeviceById($id);
     if (empty($row)) {
         nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
     }
 
-    // Load album ảnh
     $images = getDeviceImages($id);
     $row['other_images'] = [];
     foreach ($images as $img) {
@@ -176,7 +160,6 @@ if ($id > 0) {
 
     $page_title = 'Sửa thiết bị: ' . $row['title'];
 } else {
-    // Thêm mới: Khởi tạo giá trị mặc định
     $row = [
         'id' => 0,
         'title' => '',
@@ -194,15 +177,11 @@ if ($id > 0) {
     $page_title = 'Thêm thiết bị mới';
 }
 
-// Nếu có lỗi validation, giữ lại dữ liệu đã nhập
 if ($submit && !empty($error)) {
-    // Dữ liệu đã được gán vào $row ở trên
 }
 
 RENDER_FORM:
-// ================================
 // TEMPLATE HTML FORM
-// ================================
 
 $cats = getCategories();
 $brands = getBrands();
@@ -462,7 +441,6 @@ $contents .= '
     background-image: none !important;
 }
 
-/* Hiển thị viền đỏ khi invalid */
 #device-form.was-validated .form-control:invalid,
 #device-form.was-validated .form-select:invalid,
 #device-form .form-control.is-invalid,
@@ -490,7 +468,6 @@ $contents .= '
     background-image: none !important;
 }
 
-/* Hiển thị thông báo lỗi */
 #device-form .invalid-feedback {
     display: none !important;
     width: 100%;
@@ -506,7 +483,6 @@ $contents .= '
 
 <script type="text/javascript">
 $(document).ready(function() {
-    // Hàm chung để cập nhật preview ảnh
     function updateImagePreview(inputElement, previewElement) {
         var imgPath = $(inputElement).val();
         if (imgPath) {
@@ -517,7 +493,6 @@ $(document).ready(function() {
         }
     }
     
-    // Preview ảnh chính
     function updateMainImagePreview() {
         updateImagePreview("#main-image", "#main-image-preview");
     }
@@ -526,7 +501,6 @@ $(document).ready(function() {
     updateMainImagePreview();
     $(document).on("change", "#main-image", updateMainImagePreview);
     
-    // Preview ảnh phụ
     $(document).on("change", "[id^=other_image_]", function() {
         var inputId = $(this).attr("id");
         var previewId = "#" + inputId.replace("other_image_", "other_image_preview_");

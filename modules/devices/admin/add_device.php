@@ -18,7 +18,6 @@ if (defined('NV_EDITOR')) {
 
 $page_title = 'Thêm thiết bị mới';
 
-// Khởi tạo dữ liệu mặc định
 $row = [
     'id' => 0,
     'cat_id' => 0,
@@ -34,7 +33,6 @@ $row = [
     'other_images' => []
 ];
 
-// Lấy lại dữ liệu từ session nếu có lỗi
 if ($nv_Request->isset_request('device_form_data', 'session')) {
     $row = array_merge($row, $nv_Request->get_array('device_form_data', 'session', []));
     $nv_Request->unset_request('device_form_data', 'session');
@@ -46,6 +44,5 @@ if ($nv_Request->isset_request('device_form_error', 'session')) {
     $nv_Request->unset_request('device_form_error', 'session');
 }
 
-// Include template form từ save_device.php
 define('DEVICE_FORM_ONLY', true);
 include NV_ROOTDIR . '/modules/' . $module_file . '/admin/save_device.php';

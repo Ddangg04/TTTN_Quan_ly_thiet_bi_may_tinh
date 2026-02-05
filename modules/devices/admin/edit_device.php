@@ -34,7 +34,6 @@ $row = [
     'other_images' => []
 ];
 
-// Load dữ liệu thiết bị
 if ($id > 0) {
     $device_info = getDeviceById($id);
     if (empty($device_info)) {
@@ -42,7 +41,6 @@ if ($id > 0) {
     }
     $row = array_merge($row, $device_info);
 
-    // Lấy ảnh phụ
     $images = getDeviceImages($id);
     $row['other_images'] = [];
     foreach ($images as $img) {
@@ -53,7 +51,6 @@ if ($id > 0) {
     }
 }
 
-// Lấy lại dữ liệu từ session nếu có lỗi
 if ($nv_Request->isset_request('device_form_data', 'session')) {
     $row = array_merge($row, $nv_Request->get_array('device_form_data', 'session', []));
     $nv_Request->unset_request('device_form_data', 'session');
@@ -65,6 +62,5 @@ if ($nv_Request->isset_request('device_form_error', 'session')) {
     $nv_Request->unset_request('device_form_error', 'session');
 }
 
-// Include template form từ save_device.php
 define('DEVICE_FORM_ONLY', true);
 include NV_ROOTDIR . '/modules/' . $module_file . '/admin/save_device.php';
