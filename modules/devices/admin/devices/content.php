@@ -26,7 +26,7 @@ if (isset($_SESSION['bulk_result'])) {
     unset($_SESSION['bulk_result']);
 }
 
-$keyword = $nv_Request->get_title('q', 'get', '');
+$keyword = trim($nv_Request->get_string('q', 'get', ''));
 $cat_id = $nv_Request->get_int('cat_id', 'get', 0);
 $brand_id = $nv_Request->get_int('brand_id', 'get', 0);
 $status_filter = $nv_Request->get_int('status', 'get', -1);
@@ -35,7 +35,7 @@ $limit = $nv_Request->get_int('limit', 'get', 10);
 $limit < 10 && $limit = 10;
 
 $offset = ($page - 1) * $limit;
-$base_url = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=' . $op;
+$base_url = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=devices/content';
 $base_url .= '&q=' . urlencode($keyword) . '&cat_id=' . $cat_id . '&brand_id=' . $brand_id . '&status=' . $status_filter . '&limit=' . $limit;
 
 $total = countAllDevices($keyword, $cat_id, $brand_id, $status_filter);
@@ -133,7 +133,7 @@ $contents .= '
         <form action="' . NV_BASE_ADMINURL . 'index.php" method="get" style="display: flex; flex-wrap: wrap; align-items: flex-end; margin-bottom: 15px;">
             <input type="hidden" name="' . NV_LANG_VARIABLE . '" value="' . NV_LANG_DATA . '" />
             <input type="hidden" name="' . NV_NAME_VARIABLE . '" value="' . $module_name . '" />
-            <input type="hidden" name="' . NV_OP_VARIABLE . '" value="' . $op . '" />
+            <input type="hidden" name="' . NV_OP_VARIABLE . '" value="devices/content" />
             
             <div style="display: inline-block; margin-right: 20px;">
                 <label style="display: block; margin-bottom: 5px; font-weight: bold;">Từ khóa tìm kiếm</label>
@@ -183,7 +183,7 @@ $contents .= '
                         <input name="check_all[]" type="checkbox" value="yes" onclick="nv_checkAll(this.form, \'idcheck[]\', \'check_all[]\', this.checked);" />
                     </th>
                     <th class="text-center" style="width: 40px;">STT</th>
-                    <th class="text-center" style="width: 130px;">Ảnh đại diện</th>
+                    <th class="text-center" style="width: 150px;">Ảnh đại diện</th>
                     <th>Thông tin sản phẩm</th>
                     <th class="text-center" style="width: 120px;">Mã model</th>
                     <th class="text-center" style="width: 100px;">Danh mục</th>
@@ -253,7 +253,7 @@ $contents .= '
 <script type="text/javascript">
 function nv_del_device(id, checkss) {
     nvConfirm("Bạn thực sự muốn xóa? Nếu đồng ý, tất cả dữ liệu liên quan sẽ bị xóa. Bạn sẽ không thể phục hồi lại chúng sau này", function() {
-        $.post(script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=devices/del_device&nocache=" + new Date().getTime(), \'id=\' + id + \'&checkss=\' + checkss, function(res) {
+        $.post(script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + "' . NV_OP_VARIABLE . '" + "=devices/del_device&nocache=" + new Date().getTime(), \'id=\' + id + \'&checkss=\' + checkss, function(res) {
             nv_del_device_result(res);
         });
     });
@@ -291,14 +291,16 @@ function nv_main_action(oForm, checkss, msgnocheck) {
         var action = document.getElementById(\'action\').value;
         if (action == \'delete\') {
             nvConfirm(\'Bạn thực sự muốn xóa? Nếu đồng ý, tất cả dữ liệu liên quan sẽ bị xóa. Bạn sẽ không thể phục hồi lại chúng sau này\', function() {
-                $.post(script_name + \'?\' + nv_lang_variable + \'=\' + nv_lang_data + \'&\' + nv_name_variable + \'=\' + nv_module_name + \'&\' + nv_fc_variable + \'=devices/del_device&nocache=\' + new Date().getTime(), \'listid=\' + listid + \'&checkss=\' + checkss, function(res) {
+                $.post(script_name + \'?\' + nv_lang_variable + \'=\' + nv_lang_data + \'&\' + nv_name_variable + \'=\' + nv_module_name + \'&\' + "' . NV_OP_VARIABLE . '" + \'=devices/del_device&nocache=\' + new Date().getTime(), \'listid=\' + listid + \'&checkss=\' + checkss, function(res) {
                     nv_del_device_result(res);
                 });
             });
         } else if (action == \'active\' || action == \'deactive\') {
             nvConfirm(\'Bạn có chắc muốn thực hiện hành động này?\', function() {
-                window.location.href = script_name + \'?\' + nv_lang_variable + \'=\' + nv_lang_data + \'&\' + nv_name_variable + \'=\' + nv_module_name + \'&\' + nv_fc_variable + \'=devices/del_device&action=\' + action + \'&listid=\' + listid + \'&checkss=\' + checkss;
+            $.post(script_name + \'?\' + nv_lang_variable + \'=\' + nv_lang_data + \'&\' + nv_name_variable + \'=\' + nv_module_name + \'&\' + "' . NV_OP_VARIABLE . '" + \'=devices/del_device&nocache=\' + new Date().getTime(), \'action=\' + action + \'&listid=\' + listid + \'&checkss=\' + checkss, function(res) {
+                    nv_del_device_result(res);   
             });
+        });
         }
     } else {
         nvToast(msgnocheck, \'warning\');

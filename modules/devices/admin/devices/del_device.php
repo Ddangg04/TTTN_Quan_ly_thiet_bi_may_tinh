@@ -17,7 +17,7 @@ global $db, $db_config, $lang, $module_data, $module_upload;
 $id = $nv_Request->get_int('id', 'post', 0);
 $listid = $nv_Request->get_string('listid', 'post,get', '');
 $checkss = $nv_Request->get_string('checkss', 'post,get', '');
-$action = $nv_Request->get_title('action', 'get', '');
+$action = $nv_Request->get_title('action', 'post,get', '');
 $contents = 'NO_' . $id;
 
 if (($action == 'active' || $action == 'deactive') && $listid != '' && NV_CHECK_SESSION == $checkss) {
@@ -41,11 +41,12 @@ if (($action == 'active' || $action == 'deactive') && $listid != '' && NV_CHECK_
         if ($success_count > 0) {
             nv_insert_logs(NV_LANG_DATA, $module_name, $action_text . ' thiết bị', implode(', ', $artitle), $admin_info['userid']);
             $nv_Cache->delMod($module_name);
-            $_SESSION['bulk_result'] = sprintf("Đã %s thành công %d thiết bị", strtolower($action_text), $success_count);
+            echo 'OK_' . sprintf("Đã %s thành công %d thiết bị", strtolower($action_text), $success_count);
+        } else {
+             echo 'ERR_Không có thiết bị nào được cập nhật';
         }
     }
-
-    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+    exit();
 }
 
 if ($listid != '' and NV_CHECK_SESSION == $checkss and $nv_Request->isset_request('listid', 'post')) {

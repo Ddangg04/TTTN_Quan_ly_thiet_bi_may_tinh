@@ -17,6 +17,7 @@ if (defined('NV_EDITOR')) {
 }
 
 $page_title = 'Thêm thiết bị mới';
+$form_action = NV_BASE_ADMINURL . NV_LANG_DATA . '/' . $module_name . '/devices/content/';
 
 $row = [
     'id' => 0,
@@ -45,4 +46,4 @@ if ($nv_Request->isset_request('device_form_error', 'session')) {
 }
 
 define('DEVICE_FORM_ONLY', true);
-include NV_ROOTDIR . '/modules/' . $module_file . '/admin/save_device.php';
+include NV_ROOTDIR . '/modules/' . $module_file . '/admin/devices/save_device.php';

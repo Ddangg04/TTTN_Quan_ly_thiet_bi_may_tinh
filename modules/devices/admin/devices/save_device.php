@@ -12,6 +12,8 @@ if (!defined('NV_IS_FILE_ADMIN')) {
     exit('Stop!!!');
 }
 
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/global.functions.php';
+
 if (defined('NV_EDITOR')) {
     require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 }
@@ -26,7 +28,7 @@ if ($submit) {
     $checksess = $nv_Request->get_title('checkss', 'post', '');
 
     if ($checksess != md5($global_config['sitekey'] . session_id())) {
-        nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+        nv_redirect_location(NV_BASE_ADMINURL . NV_LANG_DATA . '/' . $module_name . '/devices/content/');
     }
 
     // Lấy dữ liệu từ Form
@@ -130,7 +132,7 @@ if ($submit) {
 
                 nv_insert_logs(NV_LANG_DATA, $module_name, $log_msg, 'ID: ' . $id . ' - ' . $row['title'], $admin_info['userid']);
                 $nv_Cache->delMod($module_name);
-                nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+                nv_redirect_location(NV_BASE_ADMINURL . NV_LANG_DATA . '/' . $module_name . '/devices/content/');
             } else {
                 $error[] = 'Không thể lưu dữ liệu. Vui lòng thử lại.';
             }
@@ -200,7 +202,7 @@ if (!empty($error)) {
     $contents .= '</div>';
 }
 
-$form_action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=save_device';
+$form_action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=devices/save_device';
 if ($id > 0) {
     $form_action .= '&id=' . $id;
 }
@@ -411,7 +413,7 @@ $contents .= '
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary btn-lg">' . ($row['id'] > 0 ? '<i class="fa-solid fa-save"></i> Cập nhật' : '<i class="fa-solid fa-save"></i> Lưu') . '
                         </button>
-                        <a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '" class="btn btn-secondary">
+                        <a href="' . NV_BASE_ADMINURL . NV_LANG_DATA . '/' . $module_name . '/devices/content/' . '" class="btn btn-secondary">
                             <i class="fa-solid fa-times"></i> ' . ($row['id'] > 0 ? 'Hủy sửa' : 'Hủy thêm') . '
                         </a>
                     </div>

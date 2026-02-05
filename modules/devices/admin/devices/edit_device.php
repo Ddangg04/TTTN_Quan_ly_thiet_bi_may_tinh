@@ -37,7 +37,7 @@ $row = [
 if ($id > 0) {
     $device_info = getDeviceById($id);
     if (empty($device_info)) {
-        nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+        nv_redirect_location(NV_BASE_ADMINURL . NV_LANG_DATA . '/' . $module_name . '/devices/content/');
     }
     $row = array_merge($row, $device_info);
 
@@ -63,4 +63,4 @@ if ($nv_Request->isset_request('device_form_error', 'session')) {
 }
 
 define('DEVICE_FORM_ONLY', true);
-include NV_ROOTDIR . '/modules/' . $module_file . '/admin/save_device.php';
+include NV_ROOTDIR . '/modules/' . $module_file . '/admin/devices/save_device.php';
