@@ -74,7 +74,6 @@ function getDeviceDetail($id)
     $device = $result->fetch();
 
     if ($device) {
-        // Lấy danh sách ảnh
         $sql_images = "SELECT id, url, note FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_device_images WHERE device_id = " . $id . " ORDER BY id ASC";
         $result_images = $db->query($sql_images);
         $device['images'] = [];
@@ -205,14 +204,12 @@ function deleteDevice($id)
 
     $id = intval($id);
 
-    // Lấy thông tin thiết bị trước khi xóa
     $device = getDeviceById($id);
     if (empty($device)) {
         return false;
     }
 
     try {
-        // Xóa ảnh đại diện
         if (!empty($device['image'])) {
             $main_image_path = NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $device['image'];
             if (is_file($main_image_path)) {
@@ -220,7 +217,6 @@ function deleteDevice($id)
             }
         }
 
-        // Xóa các ảnh phụ trong album
         $images = getDeviceImages($id);
         foreach ($images as $img) {
             if (!empty($img['url'])) {
@@ -231,10 +227,8 @@ function deleteDevice($id)
             }
         }
 
-        // Xóa trong DB - images trước (foreign key)
         $db->query("DELETE FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_device_images WHERE device_id = " . $id);
 
-        // Xóa thiết bị
         $db->query("DELETE FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_devices WHERE id = " . $id);
 
         return true;
