@@ -5,6 +5,7 @@
  * @Author VINADES.,JSC <contact@vinades.vn>
  * @Copyright (C) 2025 VINADES.,JSC. All rights reserved
  * @License GNU/GPL version 2 or any later version
+ * @Description Thêm/Sửa thiết bị (Form + Xử lý)
  */
 
 if (!defined('NV_IS_FILE_ADMIN')) {
@@ -15,107 +16,197 @@ if (defined('NV_EDITOR')) {
     require_once NV_ROOTDIR . '/' . NV_EDITORSDIR . '/' . NV_EDITOR . '/nv.php';
 }
 
-$page_title = 'Thêm thiết bị mới';
-$error = [];
+// Nếu được include từ add_device.php hoặc edit_device.php, chỉ hiển thị form
+if (defined('DEVICE_FORM_ONLY')) {
+    // $row, $error, $page_title đã được khởi tạo từ file gọi
+    goto RENDER_FORM;
+}
 
-$row = [
-    'id' => 0,
-    'cat_id' => 0,
-    'brand_id' => 0,
-    'title' => '',
-    'model_code' => '',
-    'quantity' => 1,
-    'price' => 0,
-    'status' => 1,
-    'image' => '',
-    'description' => '',
-    'content' => '',
-    'other_images' => []
-];
+// Xử lý POST request (lưu dữ liệu)
+$submit = $nv_Request->get_int('submit', 'post', 0);
+if ($submit) {
+    $id = $nv_Request->get_int('id', 'post', 0);
+    $checksess = $nv_Request->get_title('checkss', 'post', '');
 
+    if ($checksess != md5($global_config['sitekey'] . session_id())) {
+        nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+    }
 
-$checksess = md5($global_config['sitekey'] . session_id());
+    // Lấy dữ liệu từ Form
+    $row = [];
+    $row['id'] = $id;
+    $row['title'] = $nv_Request->get_title('title', 'post', '');
+    $row['model_code'] = $nv_Request->get_title('model_code', 'post', '');
+    $row['cat_id'] = $nv_Request->get_int('cat_id', 'post', 0);
+    $row['brand_id'] = $nv_Request->get_int('brand_id', 'post', 0);
 
-if ($nv_Request->isset_request('submit', 'post')) {
-    $checkss_post = $nv_Request->get_title('checkss', 'post', '');
+    $price_raw = $nv_Request->get_title('price', 'post', '0');
+    $row['price'] = floatval(str_replace(['.', ','], '', $price_raw));
 
-    if ($checkss_post != $checksess) {
-        $error[] = 'Phiên làm việc không hợp lệ. Vui lòng thử lại.';
-    } else {
-        // Lấy dữ liệu từ Form
-        $row['title'] = $nv_Request->get_title('title', 'post', '');
-        $row['model_code'] = $nv_Request->get_title('model_code', 'post', '');
-        $row['cat_id'] = $nv_Request->get_int('cat_id', 'post', 0);
-        $row['brand_id'] = $nv_Request->get_int('brand_id', 'post', 0);
+    $row['quantity'] = $nv_Request->get_int('quantity', 'post', 0);
+    $row['status'] = $nv_Request->get_int('status', 'post', 1);
+    $row['image'] = $nv_Request->get_title('image', 'post', '');
+    $row['description'] = $nv_Request->get_title('description', 'post', '');
+    $row['content'] = $nv_Request->get_editor('content', '', NV_ALLOWED_HTML_TAGS);
+    $row['other_images'] = $nv_Request->get_array('other_images', 'post', []);
 
-        $price_raw = $nv_Request->get_title('price', 'post', '0');
-        $row['price'] = floatval(str_replace(['.', ','], '', $price_raw));
+    $error = [];
 
-        $row['quantity'] = $nv_Request->get_int('quantity', 'post', 0);
-        $row['status'] = $nv_Request->get_int('status', 'post', 1);
-        $row['image'] = $nv_Request->get_title('image', 'post', '');
-        $row['description'] = $nv_Request->get_title('description', 'post', '');
-        $row['content'] = $nv_Request->get_editor('content', '', NV_ALLOWED_HTML_TAGS);
-        $row['other_images'] = $nv_Request->get_array('other_images', 'post', []);
+    // Validate
+    if (empty($row['title'])) {
+        $error[] = 'Vui lòng nhập tên thiết bị';
+    }
+    if (empty($row['model_code'])) {
+        $error[] = 'Vui lòng nhập mã model';
+    }
+    if ($row['cat_id'] <= 0) {
+        $error[] = 'Vui lòng chọn danh mục';
+    }
+    if ($row['brand_id'] <= 0) {
+        $error[] = 'Vui lòng chọn thương hiệu';
+    }
 
-        // Validate
-        if (empty($row['title'])) {
-            $error[] = 'Vui lòng nhập tên thiết bị';
-        }
-        if (empty($row['model_code'])) {
-            $error[] = 'Vui lòng nhập mã model';
-        }
-        if ($row['cat_id'] <= 0) {
-            $error[] = 'Vui lòng chọn danh mục';
-        }
-        if ($row['brand_id'] <= 0) {
-            $error[] = 'Vui lòng chọn thương hiệu';
-        }
+    // Lưu dữ liệu
+    if (empty($error)) {
+        try {
+            $data = [
+                'cat_id' => $row['cat_id'],
+                'brand_id' => $row['brand_id'],
+                'model_code' => $row['model_code'],
+                'title' => $row['title'],
+                'quantity' => $row['quantity'],
+                'price' => $row['price'],
+                'description' => $row['description'],
+                'content' => $row['content'],
+                'image' => $row['image'],
+                'status' => $row['status']
+            ];
 
-        // Lưu dữ liệu
-        if (empty($error)) {
-            try {
-                $data = [
-                    'cat_id' => $row['cat_id'],
-                    'brand_id' => $row['brand_id'],
-                    'model_code' => $row['model_code'],
-                    'title' => $row['title'],
-                    'quantity' => $row['quantity'],
-                    'price' => $row['price'],
-                    'description' => $row['description'],
-                    'content' => $row['content'],
-                    'image' => $row['image'],
-                    'status' => $row['status']
-                ];
+            if ($id > 0) {
+                // Cập nhật thiết bị
+                $result = updateDevice($id, $data);
+                $log_msg = 'Sửa thiết bị';
+            } else {
+                // Thêm thiết bị mới
+                $id = createDevice($data);
+                $result = ($id > 0);
+                $log_msg = 'Thêm thiết bị mới';
+            }
 
+            if ($result) {
+                // Xử lý ảnh phụ thông minh: chỉ xóa/thêm khi cần thiết
+                if ($id > 0) {
+                    // Lấy danh sách ảnh cũ từ DB
+                    $old_images = getDeviceImages($id);
+                    $old_paths = [];
+                    foreach ($old_images as $old_img) {
+                        $old_paths[$old_img['url']] = $old_img['id'];
+                    }
 
-                $device_id = createDevice($data);
-                $result = ($device_id > 0);
-
-                if ($result) {
+                    // Lấy danh sách ảnh mới từ form
+                    $new_paths = [];
                     if (!empty($row['other_images'])) {
                         foreach ($row['other_images'] as $item) {
                             if (!empty($item['path'])) {
-                                addDeviceImage($device_id, $item['path'], $item['note'] ?? '');
+                                $new_paths[] = $item['path'];
                             }
                         }
                     }
 
-                    nv_insert_logs(NV_LANG_DATA, $module_name, 'Thêm thiết bị mới', 'ID: ' . $device_id . ' - ' . $row['title'], $admin_info['userid']);
-                    $nv_Cache->delMod($module_name);
-                    nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+                    // Xóa những ảnh không còn trong danh sách mới
+                    foreach ($old_paths as $old_path => $old_id) {
+                        if (!in_array($old_path, $new_paths)) {
+                            deleteDeviceImage($old_id);
+                        }
+                    }
+
+                    // Thêm những ảnh mới (chưa có trong DB)
+                    if (!empty($row['other_images'])) {
+                        foreach ($row['other_images'] as $item) {
+                            if (!empty($item['path']) && !isset($old_paths[$item['path']])) {
+                                addDeviceImage($id, $item['path'], $item['note'] ?? '');
+                            }
+                        }
+                    }
                 } else {
-                    $error[] = 'Không thể lưu dữ liệu. Vui lòng thử lại.';
+                    // Thêm mới: insert tất cả ảnh phụ
+                    if (!empty($row['other_images'])) {
+                        foreach ($row['other_images'] as $item) {
+                            if (!empty($item['path'])) {
+                                addDeviceImage($id, $item['path'], $item['note'] ?? '');
+                            }
+                        }
+                    }
                 }
-            } catch (Exception $e) {
-                $error[] = 'Lỗi: ' . $e->getMessage();
+
+                nv_insert_logs(NV_LANG_DATA, $module_name, $log_msg, 'ID: ' . $id . ' - ' . $row['title'], $admin_info['userid']);
+                $nv_Cache->delMod($module_name);
+                nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+            } else {
+                $error[] = 'Không thể lưu dữ liệu. Vui lòng thử lại.';
             }
+        } catch (Exception $e) {
+            $error[] = 'Lỗi: ' . $e->getMessage();
         }
     }
+    // Không redirect nếu có lỗi, hiển thị form với lỗi bên dưới
 }
+
+// Hiển thị form (GET request hoặc POST có lỗi)
+$id = $nv_Request->get_int('id', 'get', 0);
+$error = isset($error) ? $error : [];
+
+// Khởi tạo dữ liệu form
+if ($id > 0) {
+    // Sửa: Load dữ liệu từ DB
+    $row = getDeviceById($id);
+    if (empty($row)) {
+        nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
+    }
+
+    // Load album ảnh
+    $images = getDeviceImages($id);
+    $row['other_images'] = [];
+    foreach ($images as $img) {
+        $row['other_images'][] = [
+            'path' => $img['url'],
+            'note' => $img['note']
+        ];
+    }
+
+    $page_title = 'Sửa thiết bị: ' . $row['title'];
+} else {
+    // Thêm mới: Khởi tạo giá trị mặc định
+    $row = [
+        'id' => 0,
+        'title' => '',
+        'model_code' => '',
+        'cat_id' => 0,
+        'brand_id' => 0,
+        'price' => 0,
+        'quantity' => 1,
+        'status' => 1,
+        'image' => '',
+        'description' => '',
+        'content' => '',
+        'other_images' => []
+    ];
+    $page_title = 'Thêm thiết bị mới';
+}
+
+// Nếu có lỗi validation, giữ lại dữ liệu đã nhập
+if ($submit && !empty($error)) {
+    // Dữ liệu đã được gán vào $row ở trên
+}
+
+RENDER_FORM:
+// ================================
+// TEMPLATE HTML FORM
+// ================================
 
 $cats = getCategories();
 $brands = getBrands();
+$checksess = md5($global_config['sitekey'] . session_id());
 
 $contents = '';
 
@@ -131,10 +222,14 @@ if (!empty($error)) {
 }
 
 $form_action = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=save_device';
+if ($id > 0) {
+    $form_action .= '&id=' . $id;
+}
 
 $contents .= '
 <form id="device-form" method="post" action="' . $form_action . '" class="needs-validation" novalidate>
     <input type="hidden" name="checkss" value="' . $checksess . '">
+    <input type="hidden" name="id" value="' . $row['id'] . '">
     <input type="hidden" name="submit" value="1">
     
     <div class="row g-3">
@@ -335,10 +430,10 @@ $contents .= '
             <div class="card">
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary btn-lg"> Lưu
+                        <button type="submit" class="btn btn-primary btn-lg">' . ($row['id'] > 0 ? '<i class="fa-solid fa-save"></i> Cập nhật' : '<i class="fa-solid fa-save"></i> Lưu') . '
                         </button>
                         <a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '" class="btn btn-secondary">
-                            <i class="fa-solid fa-times"></i> Hủy thêm sản phẩm
+                            <i class="fa-solid fa-times"></i> ' . ($row['id'] > 0 ? 'Hủy sửa' : 'Hủy thêm') . '
                         </a>
                     </div>
                 </div>
@@ -411,35 +506,31 @@ $contents .= '
 
 <script type="text/javascript">
 $(document).ready(function() {
-    function updateMainImagePreview() {
-        var imgPath = $("#main-image").val();
-        var preview = $("#main-image-preview");
+    // Hàm chung để cập nhật preview ảnh
+    function updateImagePreview(inputElement, previewElement) {
+        var imgPath = $(inputElement).val();
         if (imgPath) {
             var imgSrc = imgPath.startsWith("/") ? imgPath : ("' . NV_BASE_SITEURL . '" + imgPath);
-            preview.removeClass("d-none").find("img").attr("src", imgSrc);
+            $(previewElement).removeClass("d-none").find("img").attr("src", imgSrc);
         } else {
-            preview.addClass("d-none");
+            $(previewElement).addClass("d-none");
         }
     }
     
+    // Preview ảnh chính
+    function updateMainImagePreview() {
+        updateImagePreview("#main-image", "#main-image-preview");
+    }
+    
     $("#main-image").on("change", updateMainImagePreview);
-    
     updateMainImagePreview();
-    
     $(document).on("change", "#main-image", updateMainImagePreview);
     
+    // Preview ảnh phụ
     $(document).on("change", "[id^=other_image_]", function() {
         var inputId = $(this).attr("id");
-        var imgPath = $(this).val();
-        var previewId = inputId.replace("other_image_", "other_image_preview_");
-        var preview = $("#" + previewId);
-        
-        if (imgPath) {
-            var imgSrc = imgPath.startsWith("/") ? imgPath : ("' . NV_BASE_SITEURL . '" + imgPath);
-            preview.removeClass("d-none").find("img").attr("src", imgSrc);
-        } else {
-            preview.addClass("d-none");
-        }
+        var previewId = "#" + inputId.replace("other_image_", "other_image_preview_");
+        updateImagePreview(this, previewId);
     });
 
     $(".price-input").on("input", function() {
@@ -475,7 +566,6 @@ $(document).ready(function() {
                    \'<i class="fa-solid fa-trash"></i>\' +
                    \'</button>\' +
                    \'</div>\' +
-                   // BỔ SUNG: Vùng hiển thị Preview ảnh
                    \'<div class="text-center mb-2 d-none" id="other_image_preview_\' + imageIndex + \'">\' +
                    \'<img src="" alt="Preview" class="img-fluid rounded" style="max-height: 150px;">\' +
                    \'</div>\' +
@@ -486,14 +576,13 @@ $(document).ready(function() {
         imageIndex++;
     };
 
-    //form validation với hiển thị lỗi inline
+    // Form validation
     var forms = document.querySelectorAll(\'.needs-validation\');
     Array.prototype.slice.call(forms).forEach(function(form) {
         form.addEventListener(\'submit\', function(event) {
             var isValid = true;
             var firstError = null;
             
-            // Kiểm tra tên thiết bị
             var title = document.getElementById(\'title\');
             var titleFeedback = title.parentElement.querySelector(\'.invalid-feedback\');
             if (!title.value.trim()) {
@@ -506,7 +595,6 @@ $(document).ready(function() {
                 if (titleFeedback) titleFeedback.classList.remove(\'d-block\');
             }
             
-            // Kiểm tra mã model
             var modelCode = document.getElementById(\'model_code\');
             var modelFeedback = modelCode.parentElement.querySelector(\'.invalid-feedback\');
             if (!modelCode.value.trim()) {
@@ -519,7 +607,6 @@ $(document).ready(function() {
                 if (modelFeedback) modelFeedback.classList.remove(\'d-block\');
             }
             
-            // Kiểm tra danh mục
             var catId = document.getElementById(\'cat_id\');
             var catFeedback = catId.parentElement.querySelector(\'.invalid-feedback\');
             if (catId.value == "0" || catId.value == "") {
@@ -532,7 +619,6 @@ $(document).ready(function() {
                 if (catFeedback) catFeedback.classList.remove(\'d-block\');
             }
             
-            // Kiểm tra thương hiệu
             var brandId = document.getElementById(\'brand_id\');
             var brandFeedback = brandId.parentElement.querySelector(\'.invalid-feedback\');
             if (brandId.value == "0" || brandId.value == "") {
@@ -545,7 +631,6 @@ $(document).ready(function() {
                 if (brandFeedback) brandFeedback.classList.remove(\'d-block\');
             }
             
-            // Kiểm tra hình ảnh đại diện
             var mainImage = document.getElementById(\'main-image\');
             var mainImageError = document.getElementById(\'main-image-error\');
             if (!mainImage.value.trim()) {
@@ -564,7 +649,6 @@ $(document).ready(function() {
                 }
             }
             
-            // Kiểm tra giá bán
             var price = document.getElementById(\'price\');
             var priceFeedback = price.nextElementSibling;
             if (priceFeedback && !priceFeedback.classList.contains(\'invalid-feedback\')) {
@@ -581,7 +665,6 @@ $(document).ready(function() {
                 if (priceFeedback) priceFeedback.classList.remove(\'d-block\');
             }
             
-            // Kiểm tra số lượng
             var quantity = document.getElementById(\'quantity\');
             var qtyFeedback = quantity.parentElement.querySelector(\'.invalid-feedback\');
             var qtyValue = parseInt(quantity.value);

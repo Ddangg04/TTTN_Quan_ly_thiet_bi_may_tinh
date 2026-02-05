@@ -14,7 +14,7 @@ if (!defined('NV_ADMIN'))
 // ============================================================
 // Submenu chính hiển thị trong thanh menu admin
 // ============================================================
-$submenu['save_device'] = 'Thêm sản phẩm mới';
+$submenu['add_device'] = 'Thêm sản phẩm mới';
 $submenu['category'] = 'Danh mục sản phẩm';
 $submenu['brands'] = 'Thương hiệu';
 

@@ -201,21 +201,42 @@ function updateDevice($id, $data)
  */
 function deleteDevice($id)
 {
-    global $db, $db_config, $lang, $module_data;
+    global $db, $db_config, $lang, $module_data, $module_upload;
 
     $id = intval($id);
 
+    // Lấy thông tin thiết bị trước khi xóa
+    $device = getDeviceById($id);
+    if (empty($device)) {
+        return false;
+    }
+
     try {
-        $images = getDeviceImages($id);
-        foreach ($images as $img) {
-            $file_path = NV_ROOTDIR . '/' . $img['url'];
-            if (file_exists($file_path)) {
-                @unlink($file_path);
+        // Xóa ảnh đại diện
+        if (!empty($device['image'])) {
+            $main_image_path = NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $device['image'];
+            if (is_file($main_image_path)) {
+                @nv_deletefile($main_image_path);
             }
         }
 
-        $sql = "DELETE FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_devices WHERE id=" . $id;
-        $db->query($sql);
+        // Xóa các ảnh phụ trong album
+        $images = getDeviceImages($id);
+        foreach ($images as $img) {
+            if (!empty($img['url'])) {
+                $file_path = NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $img['url'];
+                if (is_file($file_path)) {
+                    @nv_deletefile($file_path);
+                }
+            }
+        }
+
+        // Xóa trong DB - images trước (foreign key)
+        $db->query("DELETE FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_device_images WHERE device_id = " . $id);
+
+        // Xóa thiết bị
+        $db->query("DELETE FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_devices WHERE id = " . $id);
+
         return true;
 
     } catch (Exception $e) {

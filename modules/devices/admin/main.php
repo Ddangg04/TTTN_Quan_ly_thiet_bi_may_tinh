@@ -13,6 +13,19 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 
 $page_title = $lang_module['devices_list'] ?? 'Danh Sách Thiết Bị';
 
+$bulk_message = '';
+if (isset($_SESSION['bulk_result'])) {
+    $bulk_message = '<script type="text/javascript">
+    $(document).ready(function() {
+        nvToast(\'' . addslashes($_SESSION['bulk_result']) . '\', \'success\');
+        setTimeout(function() {
+            $(".cr-toast").last().find("[data-dismiss=toast]").trigger("click");
+        }, 700);
+    });
+    </script>';
+    unset($_SESSION['bulk_result']);
+}
+
 $keyword = $nv_Request->get_title('q', 'get', '');
 $cat_id = $nv_Request->get_int('cat_id', 'get', 0);
 $brand_id = $nv_Request->get_int('brand_id', 'get', 0);
@@ -28,7 +41,7 @@ $base_url .= '&q=' . urlencode($keyword) . '&cat_id=' . $cat_id . '&brand_id=' .
 $total = countAllDevices($keyword, $cat_id, $brand_id, $status_filter);
 $devices = getAllDevices($keyword, $cat_id, $brand_id, $status_filter, $limit, $offset);
 
-$link_add = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=save_device';
+$link_add = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=add_device';
 $checksess = md5($global_config['sitekey'] . session_id());
 
 $cats = getCategories();
@@ -51,7 +64,7 @@ $status_options .= '<option value="0" ' . ($status_filter == 0 ? 'selected' : ''
 
 $rows_html = '';
 if (empty($devices)) {
-    $rows_html = '<tr><td colspan="10" class="text-center">Không có dữ liệu nào!</td></tr>';
+    $rows_html = '<tr><td colspan="11" class="text-center">Không có dữ liệu nào!</td></tr>';
 } else {
     $i = $offset;
     foreach ($devices as $device) {
@@ -62,7 +75,7 @@ if (empty($devices)) {
             ? '<span class="text-success"><i class="fa fa-check-circle"></i> Hoạt động</span>'
             : '<span class="text-danger"><i class="fa fa-minus-circle"></i> Ngưng bán</span>';
 
-        $link_edit = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=save_device&id=' . $device['id'];
+        $link_edit = NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=edit_device&id=' . $device['id'];
         $link_view = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $device['id'];
 
         $image_url = '';
@@ -92,29 +105,16 @@ if (empty($devices)) {
             <td class="text-center">' . $image_html . '</td>
             <td>
                 <a href="' . $link_view . '" class="text-primary"><strong>' . $device['title'] . '</strong></a>
-                <div class="text-muted small">Mã model: ' . $device['model_code'] . '</div>
             </td>
+            <td class="text-center">' . $device['model_code'] . '</td>
             <td class="text-center">' . $device['cat_title'] . '</td>
             <td class="text-center">' . $device['brand_title'] . '</td>
             <td class="text-center"><strong style="color: #d9534f;">' . $price_format . '</strong></td>
             <td class="text-center">' . intval($device['quantity'] ?? 0) . '</td>
             <td class="text-center">' . $status_html . '</td>
             <td class="text-center">
-                <button type="button" style="border: none; background: none; padding: 5px; cursor: pointer;" title="Xem chi tiết" data-toggle="modal" data-target="#device-detail-modal"
-                    data-title="' . nv_htmlspecialchars($device['title']) . '"
-                    data-model="' . nv_htmlspecialchars($device['model_code']) . '"
-                    data-cat="' . nv_htmlspecialchars($device['cat_title']) . '"
-                    data-brand="' . nv_htmlspecialchars($device['brand_title']) . '"
-                    data-price="' . $price_format . '"
-                    data-quantity="' . intval($device['quantity'] ?? 0) . '"
-                    data-status="' . ($device['status'] ? 'Hoạt động' : 'Ngưng bán') . '"
-                    data-image="' . (!empty($image_url) ? $image_url : '') . '"
-                    data-images="' . $images_json . '"
-                    data-specs="' . $specs . '">
-                    <i class="fa fa-eye action-icon" style="font-size: 15px; color: #6c757d;"></i>
-                </button>
                 <a href="' . $link_edit . '" style="text-decoration: none; padding: 5px;" title="Sửa"><i class="fa fa-edit action-icon" style="font-size: 15px; color: #6c757d;"></i></a>
-                <a href="javascript:void(0);" onclick="nv_del_device(' . $device['id'] . ');" style="text-decoration: none; padding: 5px;" title="Xóa"><i class="fa fa-trash-o action-icon" style="font-size: 15px; color: #6c757d;"></i></a>
+                <a href="javascript:void(0);" onclick="nv_del_device(' . $device['id'] . ', \'' . md5($device['id'] . NV_CHECK_SESSION) . '\');" style="text-decoration: none; padding: 5px;" title="Xóa"><i class="fa fa-trash-o action-icon" style="font-size: 15px; color: #6c757d;"></i></a>
             </td>
         </tr>';
     }
@@ -129,7 +129,7 @@ $contents = '';
 
 $contents .= '
 <div class="panel panel-default">
-    <div class="panel-body" style="padding: 15px 15px 15px 15px; background-color: #fff;">
+    <div class="panel-body" style="padding: 15px 15px 15px 15px; background-color: var(--nv-breadcrumb-bg) !important;">
         <form action="' . NV_BASE_ADMINURL . 'index.php" method="get" style="display: flex; flex-wrap: wrap; align-items: flex-end; margin-bottom: 15px;">
             <input type="hidden" name="' . NV_LANG_VARIABLE . '" value="' . NV_LANG_DATA . '" />
             <input type="hidden" name="' . NV_NAME_VARIABLE . '" value="' . $module_name . '" />
@@ -168,6 +168,8 @@ $contents .= '
     </div>
 </div>
 
+' . $bulk_message . '
+
 <form name="device_list" action="' . NV_BASE_ADMINURL . 'index.php?' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=del_device" method="post">';
 
 $contents .= '
@@ -182,6 +184,7 @@ $contents .= '
                     <th class="text-center" style="width: 40px;">STT</th>
                     <th class="text-center" style="width: 130px;">Ảnh đại diện</th>
                     <th>Thông tin sản phẩm</th>
+                    <th class="text-center" style="width: 120px;">Mã model</th>
                     <th class="text-center" style="width: 100px;">Danh mục</th>
                     <th class="text-center" style="width: 100px;">Thương hiệu</th>
                     <th class="text-center" style="width: 130px;">Giá (VNĐ)</th>
@@ -198,13 +201,13 @@ $contents .= '
     <div class="panel-footer clearfix">
         <div class="pull-left">
             <div class="input-group" style="width: auto;">
-                <select class="form-select" name="action_bulk" style="width: 180px !important; flex: 0 0 auto;" aria-label="Lựa chọn thao tác">
+                <select class="form-select" name="action" id="action" style="width: 180px !important; flex: 0 0 auto;" aria-label="Lựa chọn thao tác">
                     <option value="">-- Chọn hành động --</option>
                     <option value="delete">Xóa</option>
                     <option value="active">Kích hoạt</option>
                     <option value="deactive">Ngưng bán</option>
                 </select>
-                <button class="btn btn-primary" type="button" onclick="nv_main_action()">Thực hiện</button>
+                <button class="btn btn-primary" type="button" onclick="nv_main_action(this.form, \'' . NV_CHECK_SESSION . '\', \'Bạn chưa chọn thiết bị nào!\');">Thực hiện</button>
             </div>
         </div>
         <div class="pull-right">
@@ -247,44 +250,57 @@ $contents .= '
 
 $contents .= '
 <script type="text/javascript">
-function nv_del_device(id) {
-    if (confirm("Bạn có chắc muốn xóa thiết bị này?")) {
-        $.post(script_name + "?" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=del_device", {
-            id: id,
-            checkss: "' . $checksess . '"
-        }, function(res) {
-            var r_split = res.split("_");
-            if (r_split[0] == "OK") {
-                location.reload();
-            } else {
-                alert(r_split[1] || "Lỗi khi xóa");
-            }
+function nv_del_device(id, checkss) {
+    nvConfirm("Bạn thực sự muốn xóa? Nếu đồng ý, tất cả dữ liệu liên quan sẽ bị xóa. Bạn sẽ không thể phục hồi lại chúng sau này", function() {
+        $.post(script_name + "?" + nv_lang_variable + "=" + nv_lang_data + "&" + nv_name_variable + "=" + nv_module_name + "&" + nv_fc_variable + "=del_device&nocache=" + new Date().getTime(), \'id=\' + id + \'&checkss=\' + checkss, function(res) {
+            nv_del_device_result(res);
         });
+    });
+    return false;
+}
+
+function nv_del_device_result(res) {
+    var r_split = res.split("_");
+    if (r_split[0] == "OK") {
+        nvToast("Xóa thành công: " + r_split[1], \'success\');
+        setTimeout(function() { location.reload(); }, 700);
+    } else if (r_split[0] == "ERR") {
+        nvToast("Lỗi: " + r_split[1], \'error\');
+    } else {
+        nvToast("Không thể xóa thiết bị này!", \'error\');
     }
 }
 
-function nv_main_action() {
-    var action = $("select[name=action_bulk]").val();
-    if(action == "") {
-        alert("Vui lòng chọn một hành động!");
-        return false;
-    }
-    
-    if ($("input[name=\'idcheck[]\']:checked").length == 0) {
-        alert("Bạn chưa chọn thiết bị nào!");
-        return false;
-    }
-
-    if(action == "delete") {
-        if(confirm("CẢNH BÁO: Bạn có chắc chắn muốn xóa các mục đã chọn?")) {
-            $("form[name=device_list]").submit();
-        }
-    } else if(action == "active" || action == "deactive") {
-        if(confirm("Bạn có chắc muốn thực hiện hành động này?")) {
-            $("form[name=device_list]").submit();
+function nv_main_action(oForm, checkss, msgnocheck) {
+    var fa = oForm[\'idcheck[]\'];
+    var listid = \'\';
+    if (fa.length) {
+        for (var i = 0; i < fa.length; i++) {
+            if (fa[i].checked) {
+                listid = listid + fa[i].value + \',\';
+            }
         }
     } else {
-        alert("Tính năng đang phát triển!");
+        if (fa.checked) {
+            listid = listid + fa.value + \',\';
+        }
+    }
+
+    if (listid != \'\') {
+        var action = document.getElementById(\'action\').value;
+        if (action == \'delete\') {
+            nvConfirm(\'Bạn thực sự muốn xóa? Nếu đồng ý, tất cả dữ liệu liên quan sẽ bị xóa. Bạn sẽ không thể phục hồi lại chúng sau này\', function() {
+                $.post(script_name + \'?\' + nv_lang_variable + \'=\' + nv_lang_data + \'&\' + nv_name_variable + \'=\' + nv_module_name + \'&\' + nv_fc_variable + \'=del_device&nocache=\' + new Date().getTime(), \'listid=\' + listid + \'&checkss=\' + checkss, function(res) {
+                    nv_del_device_result(res);
+                });
+            });
+        } else if (action == \'active\' || action == \'deactive\') {
+            nvConfirm(\'Bạn có chắc muốn thực hiện hành động này?\', function() {
+                window.location.href = script_name + \'?\' + nv_lang_variable + \'=\' + nv_lang_data + \'&\' + nv_name_variable + \'=\' + nv_module_name + \'&\' + nv_fc_variable + \'=del_device&action=\' + action + \'&listid=\' + listid + \'&checkss=\' + checkss;
+            });
+        }
+    } else {
+        nvToast(msgnocheck, \'warning\');
     }
 }
 
@@ -337,7 +353,13 @@ $("body").on("mouseenter", ".action-icon", function() {
 }).on("mouseleave", ".action-icon", function() {
     $(this).css("color", "#6c757d");
 });
-</script>';
+</script>
+<style>
+.table a.text-primary:hover {
+    text-decoration: underline !important;
+}
+</style>
+';
 
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_admin_theme($contents);
