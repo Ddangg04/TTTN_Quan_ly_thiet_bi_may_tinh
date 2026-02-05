@@ -20,7 +20,6 @@ $checkss = $nv_Request->get_string('checkss', 'post,get', '');
 $action = $nv_Request->get_title('action', 'get', '');
 $contents = 'NO_' . $id;
 
-// Xử lý active/deactive từ bulk action (redirect từ main.php)
 if (($action == 'active' || $action == 'deactive') && $listid != '' && NV_CHECK_SESSION == $checkss) {
     $array_id = array_map('intval', explode(',', $listid));
     $array_id = array_filter($array_id);
@@ -30,14 +29,12 @@ if (($action == 'active' || $action == 'deactive') && $listid != '' && NV_CHECK_
         $action_text = ($action == 'active') ? 'Kích hoạt' : 'Ngưng bán';
         $ids_str = implode(',', $array_id);
 
-        // Lấy danh sách title để ghi log (1 câu SELECT)
         $artitle = [];
         $result = $db->query("SELECT title FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_devices WHERE id IN (" . $ids_str . ")");
         while ($row = $result->fetch()) {
             $artitle[] = $row['title'];
         }
 
-        // Cập nhật trạng thái (1 câu UPDATE cho tất cả)
         $db->query("UPDATE " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_devices SET status = " . $new_status . " WHERE id IN (" . $ids_str . ")");
         $success_count = count($artitle);
 
@@ -51,7 +48,6 @@ if (($action == 'active' || $action == 'deactive') && $listid != '' && NV_CHECK_
     nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
 }
 
-// Xử lý bulk delete qua Ajax (POST listid)
 if ($listid != '' and NV_CHECK_SESSION == $checkss and $nv_Request->isset_request('listid', 'post')) {
     $del_array = array_map('intval', explode(',', $listid));
     $success_count = 0;
@@ -65,7 +61,6 @@ if ($listid != '' and NV_CHECK_SESSION == $checkss and $nv_Request->isset_reques
 
         $device = getDeviceById($device_id);
         if (!empty($device)) {
-            // Sử dụng hàm deleteDevice() thay vì duplicate code
             if (deleteDevice($device_id)) {
                 $artitle[] = $device['title'];
                 $success_count++;
@@ -85,7 +80,6 @@ if ($listid != '' and NV_CHECK_SESSION == $checkss and $nv_Request->isset_reques
     exit();
 }
 
-// Xử lý xóa đơn lẻ qua Ajax
 if ($id > 0 and md5($id . NV_CHECK_SESSION) == $checkss) {
     $device = getDeviceById($id);
 
@@ -94,7 +88,6 @@ if ($id > 0 and md5($id . NV_CHECK_SESSION) == $checkss) {
         exit();
     }
 
-    // Sử dụng hàm deleteDevice() thay vì duplicate code
     if (deleteDevice($id)) {
         nv_insert_logs(NV_LANG_DATA, $module_name, 'Xóa thiết bị', $device['title'], $admin_info['userid']);
         $nv_Cache->delMod($module_name);
@@ -105,5 +98,4 @@ if ($id > 0 and md5($id . NV_CHECK_SESSION) == $checkss) {
     exit();
 }
 
-// Không có action hợp lệ
 nv_redirect_location(NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name);
