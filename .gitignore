@@ -10,6 +10,7 @@ data/logs/
 
 # Config files (local)
 config.php
+data/config/
 
 # Uploaded files
 uploads/
