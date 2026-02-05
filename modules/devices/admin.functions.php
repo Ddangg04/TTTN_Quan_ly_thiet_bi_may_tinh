@@ -1,6 +1,25 @@
 <?php
-if (!defined('NV_ADMIN') || !defined('NV_MAINFILE') || !defined('NV_IS_MODADMIN'))
-    die('Stop!!!');
+
+/**
+ * NukeViet Content Management System
+ * @version 5.x
+ * @author VINADES.,JSC <contact@vinades.vn>
+ * @copyright (C) 2009-2025 VINADES.,JSC. All rights reserved
+ * @license GNU/GPL version 2 or any later version
+ */
+
+if (!defined('NV_ADMIN') or !defined('NV_MAINFILE') or !defined('NV_IS_MODADMIN')) {
+    exit('Stop!!!');
+}
+
+define('NV_IS_FILE_ADMIN', true);
+
+if (!isset($GLOBALS['lang'])) {
+    $GLOBALS['lang'] = NV_LANG_DATA;
+}
+
+require_once NV_ROOTDIR . '/modules/' . $module_file . '/global.functions.php';
+
 $allow_func=[
     'main',
     'detail',
@@ -16,9 +35,10 @@ $allow_func=[
     'brands/edit',
     'brands/delete',
     'devices/content',
-    'devices/add',
-    'devices/edit',
-    'devices/delete',
+    'devices/add_device',
+    'devices/edit_device',
+    'devices/del_device',
+    'devices/save_device',
     'images/content',
     'images/add',
     'images/edit',
