@@ -43,6 +43,9 @@ nv_add_hook($module_name, 'get_global_admin_theme', $priority, function ($vars) 
     if (($module_info['module_file'] ?? '') == 'feeds' and in_array($op, ['main'])) {
         return $new_theme;
     }
+    if (($module_info['module_file'] ?? '') == 'devices' and in_array($op, ['main', 'detail', 'category', 'search'])) {
+        return $new_theme;
+    }
 
     return $admin_theme;
 });
