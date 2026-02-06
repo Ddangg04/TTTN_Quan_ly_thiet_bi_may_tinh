@@ -1,153 +1,107 @@
 <?php
 
 /**
- * Quản lý thương hiệu - Danh sách
+ * @Project NUKEVIET 5.x
+ * @Controller Brands List - UI Optimized
  */
 
 if (!defined('NV_ADMIN') || !defined('NV_MAINFILE') || !defined('NV_IS_MODADMIN')) {
-    die('Stop!!!,brands');
+    die('Stop!!!');
 }
-$page_title = 'Quản lý thương hiệu';
 
-// ===== XỬ LÝ AJAX: CHANGE STATUS =====
+// Xử lý
 if ($nv_Request->isset_request('change_status', 'post')) {
     $id = $nv_Request->get_int('id', 'post', 0);
     $new_status = $nv_Request->get_int('new_status', 'post', 0);
-    
     if ($id > 0) {
-        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_brands 
-                SET status = " . $new_status . " 
-                WHERE id = " . $id;
-        $db->query($sql);
-        
+        $db->query("UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_brands SET status = $new_status WHERE id = $id");
         nv_jsonOutput(['status' => 'OK']);
     }
-    nv_jsonOutput(['status' => 'ERROR']);
 }
 
-// ===== XỬ LÝ AJAX: DELETE =====
 if ($nv_Request->isset_request('delete', 'post')) {
     $id = $nv_Request->get_int('id', 'post', 0);
-    
-    if ($id > 0) {
-        // Kiểm tra sản phẩm (do có FK RESTRICT)
-        $sql = "SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_devices WHERE brand_id = " . $id;
-        $product_count = $db->query($sql)->fetchColumn();
-        
-        if ($product_count > 0) {
-            nv_jsonOutput(['status' => 'ERROR', 'message' => 'Không thể xóa! Có ' . $product_count . ' sản phẩm thuộc thương hiệu này.']);
-        }
-        
-        // Xóa
-        $sql = "DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_brands WHERE id = " . $id;
-        if ($db->exec($sql)) {
-            nv_jsonOutput(['status' => 'OK', 'message' => 'Xóa thành công']);
-        }
-    }
-    nv_jsonOutput(['status' => 'ERROR', 'message' => 'Lỗi xóa']);
+    $product_count = $db->query("SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_devices WHERE brand_id = $id")->fetchColumn();
+    if ($product_count > 0) nv_jsonOutput(['status' => 'ERROR', 'message' => 'Còn ' . $product_count . ' sản phẩm, không thể xóa!']);
+    $db->query("DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_brands WHERE id = $id");
+    nv_jsonOutput(['status' => 'OK', 'message' => 'Đã xóa thành công']);
 }
 
-// ===== LẤY DANH SÁCH BRANDS =====
+// Truy vấn dữ liệu
 $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_brands ORDER BY id DESC';
 $result = $db->query($sql);
 $brands = [];
 while ($row = $result->fetch()) {
-    // Đếm số sản phẩm
-    $sql_count = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_devices WHERE brand_id = ' . $row['id'];
-    $row['product_count'] = $db->query($sql_count)->fetchColumn();
-    
+    $row['product_count'] = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_devices WHERE brand_id = ' . $row['id'])->fetchColumn();
     $brands[] = $row;
 }
 
-// ===== HTML =====
-$contents = '';
-
-$contents .= '<div class="well">
-    <a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=brands/add" class="btn btn-primary btn-lg">
-        <i class="fa fa-plus-circle"></i> Thêm thương hiệu mới
-    </a>
-    <span class="pull-right" style="line-height:46px">
-        <strong>Tổng số: ' . count($brands) . '</strong> thương hiệu
-    </span>
+$contents = '<div class="row" style="margin-bottom: 20px;">
+    <div class="col-sm-6">
+        <a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=brands/add" class="btn btn-primary shadow-sm" style="border-radius:20px; padding: 8px 25px;">
+            <i class="fa fa-plus-circle"></i> Thêm thương hiệu mới
+        </a>
+    </div>
+    <div class="col-sm-6 text-right">
+        <p style="margin-top:10px; color:#666;">Tổng số: <strong>' . count($brands) . '</strong> thương hiệu</p>
+    </div>
 </div>';
 
-$contents .= '<div class="table-responsive">
-<table class="table table-striped table-bordered table-hover">
+$contents .= '<div class="card-custom" style="background:#fff; border-radius:10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow:hidden; border:1px solid #eee;">
+<table class="table table-hover" style="margin-bottom:0;">
     <thead>
-        <tr class="active">
-            <th width="50" class="text-center">ID</th>
+        <tr style="background:#f8f9fa; color:#333;">
+            <th class="text-center" width="70">ID</th>
             <th>Tên thương hiệu</th>
-            <th width="250">Website hỗ trợ</th>
-            <th width="100" class="text-center">Số sản phẩm</th>
-            <th width="120" class="text-center">Trạng thái</th>
-            <th width="150" class="text-center">Thao tác</th>
+            <th>Website</th>
+            <th class="text-center">Sản phẩm</th>
+            <th class="text-center">Trạng thái</th>
+            <th class="text-center" width="180">Thao tác</th>
         </tr>
     </thead>
     <tbody>';
 
 foreach ($brands as $brand) {
+    $status_class = $brand['status'] == 1 ? 'label-success' : 'label-default';
     $status_text = $brand['status'] == 1 ? 'Hiển thị' : 'Ẩn';
-    $status_class = $brand['status'] == 1 ? 'success' : 'default';
     
     $contents .= '<tr>
-        <td class="text-center">' . $brand['id'] . '</td>
-        <td><strong>' . $brand['title'] . '</strong></td>
-        <td>' . (!empty($brand['support']) ? '<a href="' . $brand['support'] . '" target="_blank">' . $brand['support'] . '</a>' : '-') . '</td>
-        <td class="text-center"><span class="badge">' . $brand['product_count'] . '</span></td>
-        <td class="text-center">
-            <span class="label label-' . $status_class . ' change-status" data-id="' . $brand['id'] . '" data-status="' . $brand['status'] . '" style="cursor:pointer">
-                ' . $status_text . '
-            </span>
+        <td class="text-center" style="vertical-align:middle;">' . $brand['id'] . '</td>
+        <td style="vertical-align:middle;"><strong>' . $brand['title'] . '</strong></td>
+        <td style="vertical-align:middle;">' . (!empty($brand['support']) ? '<a href="' . $brand['support'] . '" target="_blank" class="text-info"><i class="fa fa-external-link"></i> Truy cập</a>' : '-') . '</td>
+        <td class="text-center" style="vertical-align:middle;"><span class="badge" style="background:#eee; color:#333; font-weight:normal;">' . $brand['product_count'] . '</span></td>
+        <td class="text-center" style="vertical-align:middle;">
+            <span class="label ' . $status_class . ' change-status" data-id="' . $brand['id'] . '" data-status="' . $brand['status'] . '" style="cursor:pointer; padding:5px 10px;">' . $status_text . '</span>
         </td>
-        <td class="text-center">
-            <a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=brands/edit&amp;id=' . $brand['id'] . '" class="btn btn-sm btn-default">
-                <i class="fa fa-edit"></i> Sửa
-            </a>
-            <button class="btn btn-sm btn-danger btn-delete" data-id="' . $brand['id'] . '">
-                <i class="fa fa-trash"></i> Xóa
-            </button>
+        <td class="text-center" style="vertical-align:middle;">
+            <a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=brands/edit&id=' . $brand['id'] . '" class="btn btn-xs btn-default" title="Sửa"><i class="fa fa-edit"></i> Sửa</a>
+            <button class="btn btn-xs btn-danger btn-delete" data-id="' . $brand['id'] . '" title="Xóa"><i class="fa fa-trash"></i> Xóa</button>
         </td>
     </tr>';
 }
-
-if (empty($brands)) {
-    $contents .= '<tr><td colspan="6" class="text-center">Chưa có thương hiệu nào</td></tr>';
-}
-
 $contents .= '</tbody></table></div>';
 
-// JavaScript
+// JS G
 $contents .= '<script>
 $(function() {
     $(".change-status").click(function() {
         var $el = $(this);
-        var id = $el.data("id");
-        var status = $el.data("status");
-        var newStatus = status == 1 ? 0 : 1;
-        
+        var id = $el.data("id"), status = $el.data("status"), newStatus = status == 1 ? 0 : 1;
         $.post("", {change_status: 1, id: id, new_status: newStatus}, function(res) {
             if (res.status == "OK") {
-                if (newStatus == 1) {
-                    $el.removeClass("label-default").addClass("label-success").text("Hiển thị");
-                } else {
-                    $el.removeClass("label-success").addClass("label-default").text("Ẩn");
-                }
-                $el.data("status", newStatus);
+                $el.toggleClass("label-success label-default").text(newStatus == 1 ? "Hiển thị" : "Ẩn").data("status", newStatus);
             }
         }, "json");
     });
-    
     $(".btn-delete").click(function() {
-        if (!confirm("Xóa thương hiệu này?")) return;
         var id = $(this).data("id");
-        $.post("", {delete: 1, id: id}, function(res) {
-            alert(res.message);
-            if (res.status == "OK") location.reload();
-        }, "json");
+        if (confirm("Xác nhận xóa thương hiệu này?")) {
+            $.post("", {delete: 1, id: id}, function(res) {
+                if (res.status == "OK") location.reload(); else alert(res.message);
+            }, "json");
+        }
     });
 });
 </script>';
 
-include NV_ROOTDIR . '/includes/header.php';
 echo nv_admin_theme($contents);
-include NV_ROOTDIR . '/includes/footer.php';
