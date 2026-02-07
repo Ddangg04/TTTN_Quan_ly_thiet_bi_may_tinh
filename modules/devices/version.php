@@ -9,11 +9,11 @@
  * @see https://github.com/nukeviet The NukeViet CMS GitHub project
  */
 
-if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
-    exit('Stop!!!');
+if (!defined('NV_MAINFILE')) {
+    die('Stop!!!,version');
 }
 $module_version = [
-    'name'            => 'Quản lý Thiết bị',
+    'name'            => 'devices',
     'modfuncs'        => 'main,detail,category,search,brand',
     'submenu'         => 'main,detail,category,search,brand',
     'is_sysmod'       => 0,

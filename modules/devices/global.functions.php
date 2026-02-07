@@ -372,5 +372,3 @@ function countAllDevices($keyword = '', $cat_id = 0, $brand_id = 0, $status = 1)
     $sql = "SELECT COUNT(*) FROM " . $db_config['prefix'] . "_" . $lang . "_" . $module_data . "_devices d " . $where;
     return $db->query($sql)->fetchColumn();
 }
-
-

@@ -1,153 +1,84 @@
 <?php
 
 /**
- * Quản lý thương hiệu - Danh sách
+ * @Project NUKEVIET 5.x
+ * @Controller Brands List - Optimized with Template
  */
 
 if (!defined('NV_ADMIN') || !defined('NV_MAINFILE') || !defined('NV_IS_MODADMIN')) {
-    die('Stop!!!,brands');
+    die('Stop!!!');
 }
+
 $page_title = 'Quản lý thương hiệu';
 
-// ===== XỬ LÝ AJAX: CHANGE STATUS =====
+// Xử lý AJAX thay đổi trạng thái
 if ($nv_Request->isset_request('change_status', 'post')) {
     $id = $nv_Request->get_int('id', 'post', 0);
     $new_status = $nv_Request->get_int('new_status', 'post', 0);
-    
     if ($id > 0) {
-        $sql = "UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_brands 
-                SET status = " . $new_status . " 
-                WHERE id = " . $id;
-        $db->query($sql);
-        
+        $db->query("UPDATE " . NV_PREFIXLANG . "_" . $module_data . "_brands SET status = $new_status WHERE id = $id");
         nv_jsonOutput(['status' => 'OK']);
     }
-    nv_jsonOutput(['status' => 'ERROR']);
 }
 
-// ===== XỬ LÝ AJAX: DELETE =====
+// Xử lý AJAX xóa
 if ($nv_Request->isset_request('delete', 'post')) {
     $id = $nv_Request->get_int('id', 'post', 0);
+    $product_count = $db->query("SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_devices WHERE brand_id = $id")->fetchColumn();
     
-    if ($id > 0) {
-        // Kiểm tra sản phẩm (do có FK RESTRICT)
-        $sql = "SELECT COUNT(*) FROM " . NV_PREFIXLANG . "_" . $module_data . "_devices WHERE brand_id = " . $id;
-        $product_count = $db->query($sql)->fetchColumn();
-        
-        if ($product_count > 0) {
-            nv_jsonOutput(['status' => 'ERROR', 'message' => 'Không thể xóa! Có ' . $product_count . ' sản phẩm thuộc thương hiệu này.']);
-        }
-        
-        // Xóa
-        $sql = "DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_brands WHERE id = " . $id;
-        if ($db->exec($sql)) {
-            nv_jsonOutput(['status' => 'OK', 'message' => 'Xóa thành công']);
-        }
+    if ($product_count > 0) {
+        nv_jsonOutput(['status' => 'ERROR', 'message' => 'Còn ' . $product_count . ' sản phẩm, không thể xóa!']);
     }
-    nv_jsonOutput(['status' => 'ERROR', 'message' => 'Lỗi xóa']);
+    
+    $db->query("DELETE FROM " . NV_PREFIXLANG . "_" . $module_data . "_brands WHERE id = $id");
+    nv_jsonOutput(['status' => 'OK', 'message' => 'Đã xóa thành công']);
 }
 
-// ===== LẤY DANH SÁCH BRANDS =====
+// ===== LẤY DỮ LIỆU =====
 $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_' . $module_data . '_brands ORDER BY id DESC';
 $result = $db->query($sql);
 $brands = [];
+
 while ($row = $result->fetch()) {
-    // Đếm số sản phẩm
-    $sql_count = 'SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_devices WHERE brand_id = ' . $row['id'];
-    $row['product_count'] = $db->query($sql_count)->fetchColumn();
-    
+    $row['product_count'] = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_' . $module_data . '_devices WHERE brand_id = ' . $row['id'])->fetchColumn();
     $brands[] = $row;
 }
 
-// ===== HTML =====
-$contents = '';
+// ===== XỬ LÝ TEMPLATE =====
+$xtpl = new XTemplate('brands_content.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
 
-$contents .= '<div class="well">
-    <a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=brands/add" class="btn btn-primary btn-lg">
-        <i class="fa fa-plus-circle"></i> Thêm thương hiệu mới
-    </a>
-    <span class="pull-right" style="line-height:46px">
-        <strong>Tổng số: ' . count($brands) . '</strong> thương hiệu
-    </span>
-</div>';
+// Gán biến cơ bản
+$xtpl->assign('ADD_URL', NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=brands/add');
+$xtpl->assign('TOTAL_BRANDS', count($brands));
 
-$contents .= '<div class="table-responsive">
-<table class="table table-striped table-bordered table-hover">
-    <thead>
-        <tr class="active">
-            <th width="50" class="text-center">ID</th>
-            <th>Tên thương hiệu</th>
-            <th width="250">Website hỗ trợ</th>
-            <th width="100" class="text-center">Số sản phẩm</th>
-            <th width="120" class="text-center">Trạng thái</th>
-            <th width="150" class="text-center">Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>';
-
+// Duyệt qua từng thương hiệu
 foreach ($brands as $brand) {
+    $status_class = $brand['status'] == 1 ? 'label-success' : 'label-default';
     $status_text = $brand['status'] == 1 ? 'Hiển thị' : 'Ẩn';
-    $status_class = $brand['status'] == 1 ? 'success' : 'default';
     
-    $contents .= '<tr>
-        <td class="text-center">' . $brand['id'] . '</td>
-        <td><strong>' . $brand['title'] . '</strong></td>
-        <td>' . (!empty($brand['support']) ? '<a href="' . $brand['support'] . '" target="_blank">' . $brand['support'] . '</a>' : '-') . '</td>
-        <td class="text-center"><span class="badge">' . $brand['product_count'] . '</span></td>
-        <td class="text-center">
-            <span class="label label-' . $status_class . ' change-status" data-id="' . $brand['id'] . '" data-status="' . $brand['status'] . '" style="cursor:pointer">
-                ' . $status_text . '
-            </span>
-        </td>
-        <td class="text-center">
-            <a href="' . NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=brands/edit&amp;id=' . $brand['id'] . '" class="btn btn-sm btn-default">
-                <i class="fa fa-edit"></i> Sửa
-            </a>
-            <button class="btn btn-sm btn-danger btn-delete" data-id="' . $brand['id'] . '">
-                <i class="fa fa-trash"></i> Xóa
-            </button>
-        </td>
-    </tr>';
+    $support_link = '-';
+    if (!empty($brand['support'])) {
+        $support_link = '<a href="' . $brand['support'] . '" target="_blank" class="text-info"><i class="fa fa-external-link"></i> Truy cập</a>';
+    }
+    
+    $edit_url = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=brands/edit&id=' . $brand['id'];
+    
+    $xtpl->assign('BRAND', [
+        'id' => $brand['id'],
+        'title' => $brand['title'],
+        'support_link' => $support_link,
+        'product_count' => $brand['product_count'],
+        'status' => $brand['status'],
+        'status_class' => $status_class,
+        'status_text' => $status_text,
+        'edit_url' => $edit_url
+    ]);
+    
+    $xtpl->parse('main.loop');
 }
 
-if (empty($brands)) {
-    $contents .= '<tr><td colspan="6" class="text-center">Chưa có thương hiệu nào</td></tr>';
-}
-
-$contents .= '</tbody></table></div>';
-
-// JavaScript
-$contents .= '<script>
-$(function() {
-    $(".change-status").click(function() {
-        var $el = $(this);
-        var id = $el.data("id");
-        var status = $el.data("status");
-        var newStatus = status == 1 ? 0 : 1;
-        
-        $.post("", {change_status: 1, id: id, new_status: newStatus}, function(res) {
-            if (res.status == "OK") {
-                if (newStatus == 1) {
-                    $el.removeClass("label-default").addClass("label-success").text("Hiển thị");
-                } else {
-                    $el.removeClass("label-success").addClass("label-default").text("Ẩn");
-                }
-                $el.data("status", newStatus);
-            }
-        }, "json");
-    });
-    
-    $(".btn-delete").click(function() {
-        if (!confirm("Xóa thương hiệu này?")) return;
-        var id = $(this).data("id");
-        $.post("", {delete: 1, id: id}, function(res) {
-            alert(res.message);
-            if (res.status == "OK") location.reload();
-        }, "json");
-    });
-});
-</script>';
-
+$xtpl->parse('main');
+$contents = $xtpl->text('main');
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_admin_theme($contents);
 include NV_ROOTDIR . '/includes/footer.php';

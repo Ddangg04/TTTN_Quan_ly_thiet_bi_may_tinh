@@ -1,115 +1,116 @@
-<!-- BEGIN: main -->
-<div class="container-fluid px-4">
-    <div class="row mb-3 align-items-center">
-        <div class="col-md-6">
-            <h2 class="page-header">{LANG.devices_list_title}</h2>
-        </div>
-        <div class="col-md-6 text-end">
-            <a href="{ADD_DEVICE_URL}" class="btn btn-primary">
-                <i class="fas fa-plus me-1"></i>{LANG.btn_add}
-            </a>
-        </div>
-    </div>
-
-    <!-- Filter Form -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form method="GET" action="" class="row g-3 align-items-end">
-                <div class="col-md-3">
-                    <label class="form-label">{LANG.filter_keyword}</label>
-                    <input type="text" name="keyword" class="form-control" value="{SEARCH_KEYWORD}" placeholder="{LANG.filter_keyword}">
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-cube fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div style="font-size: 30px;">{COUNT_ACTIVE}</div>
+                        <div>Sản phẩm Active</div>
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <label class="form-label">{LANG.filter_category}</label>
-                    <select name="cat_id" class="form-select">
-                        <option value="0">{LANG.filter_all}</option>
-                        <!-- BEGIN: cat_option -->
-                        <option value="{CAT.id}" {CAT.selected}>{CAT.title}</option>
-                        <!-- END: cat_option -->
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">{LANG.filter_brand}</label>
-                    <select name="brand_id" class="form-select">
-                        <option value="0">{LANG.filter_all}</option>
-                        <!-- BEGIN: brand_option -->
-                        <option value="{BRAND.id}" {BRAND.selected}>{BRAND.title}</option>
-                        <!-- END: brand_option -->
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search me-1"></i>{LANG.btn_search}
-                    </button>
-                    <a href="?" class="btn btn-outline-secondary">{LANG.btn_reset}</a>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
-    <!-- Results Info -->
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <small class="text-muted">{LANG.total_items}: <strong>{TOTAL_ITEMS}</strong></small>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-folder fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div style="font-size: 30px;">{COUNT_CATS}</div>
+                        <div>Danh mục</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Data Table -->
-    <div class="table-responsive">
-        <table class="table table-hover table-striped align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th style="width:50px">#</th>
-                    <th style="width:80px">{LANG.device_image}</th>
-                    <th>{LANG.device_title}</th>
-                    <th>{LANG.device_category}</th>
-                    <th>{LANG.device_brand}</th>
-                    <th style="width:120px">{LANG.device_price}</th>
-                    <th style="width:70px">{LANG.device_quantity}</th>
-                    <th style="width:100px">{LANG.device_status}</th>
-                    <th style="width:100px">{LANG.device_created}</th>
-                    <th style="width:120px" class="text-center">{GLANG.actions}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- BEGIN: device_row -->
-                <tr>
-                    <td class="text-center text-muted">{DEVICE.id}</td>
-                    <td>
-                        <img src="{DEVICE.image}" alt="{DEVICE.title}" class="rounded" style="width:60px; height:60px; object-fit:cover;">
-                    </td>
-                    <td><strong>{DEVICE.title}</strong></td>
-                    <td>{DEVICE.cat_title}</td>
-                    <td>{DEVICE.brand_title}</td>
-                    <td>{DEVICE.price}</td>
-                    <td class="text-center">{DEVICE.quantity}</td>
-                    <td><span class="{DEVICE.status_class}">{DEVICE.status}</span></td>
-                    <td class="text-muted" style="font-size:0.85rem">{DEVICE.created_time}</td>
-                    <td class="text-center">
-                        <a href="{DEVICE.edit_url}" class="btn btn-sm btn-outline-primary me-1" title="{LANG.btn_edit}">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                        <a href="{DEVICE.del_url}" class="btn btn-sm btn-outline-danger" title="{LANG.btn_delete}"
-                           onclick="return confirm('{LANG.confirm_delete}')">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </td>
-                </tr>
-                <!-- END: device_row -->
-            </tbody>
-        </table>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tags fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div style="font-size: 30px;">{COUNT_BRANDS}</div>
+                        <div>Thương hiệu</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Pagination -->
-    <!-- BEGIN: pagination_item -->
-    <!-- END: pagination_item -->
-    <nav>
-        <ul class="pagination pagination-sm justify-content-center">
-            <!-- BEGIN: pagination_item -->
-            <li class="{PAGE.class}">
-                <a class="page-link" href="{PAGE.url}">{PAGE.num}</a>
-            </li>
-            <!-- END: pagination_item -->
-        </ul>
-    </nav>
+    <div class="col-lg-3 col-md-6 col-sm-12">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-money fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div style="font-size: 20px; font-weight:bold">{TOTAL_VALUE}</div>
+                        <div>Giá trị kho</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- END: main -->
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-clock-o fa-fw"></i> 5 Sản phẩm mới cập nhật
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="50">STT</th>
+                        <th>Tên thiết bị</th>
+                        <th>Danh mục</th>
+                        <th>Thương hiệu</th>
+                        <th>Giá bán</th>
+                        <th class="text-center">Kho hàng</th>
+                        <th class="text-center" width="100">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center"><strong>{ROW.stt}</strong></td>
+                        <td><a href="{ROW.link_edit}" style="font-weight:600; color:#337ab7">{ROW.title}</a></td>
+                        <td>{ROW.cat_name}</td>
+                        <td>{ROW.brand_name}</td>
+                        <td class="text-danger" style="font-weight:bold">{ROW.price}</td>
+                        <td class="text-center">{ROW.stock_label}</td>
+                        <td class="text-center">
+                            <a href="{ROW.link_edit}" class="btn btn-xs btn-default" title="Sửa"><i class="fa fa-edit"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+            </table>
+        </div>
+        <div class="text-center">{LANG.no_product}</div>
+        </div>
+</div>
+
+<style>
+    /* CSS bổ trợ cho Dashboard */
+    .panel-green { border-color: #5cb85c; }
+    .panel-green .panel-heading { border-color: #5cb85c; color: #fff; background-color: #5cb85c; }
+    .panel-yellow { border-color: #f0ad4e; }
+    .panel-yellow .panel-heading { border-color: #f0ad4e; color: #fff; background-color: #f0ad4e; }
+    .panel-red { border-color: #d9534f; }
+    .panel-red .panel-heading { border-color: #d9534f; color: #fff; background-color: #d9534f; }
+    
+    .status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; color: #fff; }
+    .label-instock { background-color: #28a745; }
+    .label-outstock { background-color: #dc3545; }
+</style>
