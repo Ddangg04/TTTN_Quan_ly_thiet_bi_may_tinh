@@ -429,7 +429,11 @@ HTML;
                         </div>
                         <div class="gvn-d-info">
                             <h1 style="font-size:22px; font-weight:bold; margin-bottom:10px;">{$product['title']}</h1>
+<<<<<<< HEAD
                             <div style="color:#777; font-size:13px; margin-bottom:15px;">Mã: <b>{$product['model_code']}</b> | Số lượng: {$product['quantity']}</div>
+=======
+                            <div style="color:#777; font-size:13px; margin-bottom:15px;">Mã: <b>{$product['model_code']}</b> | Xem: {$product['quantity']}</div>
+>>>>>>> 6f83947686a34622ad1784a2ce826655977fa29d
                             <div style="font-size:26px; color:#d0021b; font-weight:bold; background:#f5f5f5; padding:10px; border-radius:4px; margin-bottom:15px;">{$price}</div>
                             
                             <div style="font-size:14px; line-height:1.6; color:#333;">
